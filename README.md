@@ -1,6 +1,6 @@
 # SunVortex Framework
 
-A lightweight, production-ready PHP framework with built-in ORM, migrations, seeders, middleware pipeline, and fluent query builder.
+Framework PHP yang ringan dan siap produksi dengan ORM bawaan, migrasi database, seeder, middleware pipeline, dan fluent query builder.
 
 ![PHP Version](https://img.shields.io/badge/PHP-7.3+-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -8,69 +8,69 @@ A lightweight, production-ready PHP framework with built-in ORM, migrations, see
 
 ---
 
-## 🎯 About
+## 🎯 Tentang Framework
 
-**SunVortex** is a modern PHP framework designed for rapid development of scalable web applications. It combines simplicity with powerful features, including:
+**SunVortex** adalah framework PHP modern yang dirancang untuk pengembangan cepat aplikasi web yang scalable. Menggabungkan kesederhanaan dengan fitur-fitur powerful, termasuk:
 
-- **Object-Relational Mapping (ORM)** — Eloquent-like model layer with CRUD, events, and relationships
-- **Database Migrations** — Version control for your database schema
-- **Data Seeding** — Easy test data generation with faker support
-- **Middleware Pipeline** — Built-in CORS, CSRF, Auth, throttling, and caching middleware
-- **Fluent Query Builder** — Type-safe SQL building without raw SQL
-- **Request/Response Abstraction** — Clean HTTP handling with automatic content negotiation
-- **Built-in Caching** — File and Redis support for query and response caching
-- **Reflection-based Routing** — Zero-configuration routing via method discovery
-- **Dependency Injection** — Automatic constructor resolution and injection
+- **Object-Relational Mapping (ORM)** — Model layer mirip Eloquent dengan CRUD, events, dan relationships
+- **Database Migrations** — Version control untuk skema database
+- **Data Seeding** — Pembuatan data test/dummy dengan mudah menggunakan faker
+- **Middleware Pipeline** — Middleware bawaan CORS, CSRF, Auth, throttling, dan caching
+- **Fluent Query Builder** — Pembangunan SQL yang aman tanpa raw SQL
+- **Request/Response Abstraction** — Handling HTTP yang clean dengan automatic content negotiation
+- **Built-in Caching** — Dukungan cache driver File dan Redis untuk query dan response
+- **Reflection-based Routing** — Routing tanpa konfigurasi via method discovery
+- **Dependency Injection** — Automatic constructor resolution dan injection
 
-Perfect for developers who want **Laravel-like features with minimal overhead** and maximum control over their codebase.
+Sempurna untuk developer yang menginginkan **fitur seperti Laravel dengan overhead minimal** dan kontrol maksimal atas codebase mereka.
 
 ---
 
-## ✨ Key Features
+## ✨ Fitur Unggulan
 
 ### 🗄️ Database Layer
 
-- **BaseModel ORM** with fillable/guarded, timestamps, soft delete, events
-- **Type Casting** — Automatic conversion (int, float, bool, array, json, date)
-- **Lifecycle Events** — before/after save, create, update, delete hooks
-- **Query Builder** — Fluent API for SELECT, INSERT, UPDATE, DELETE
-- **Multiple Connections** — MySQL, PostgreSQL, SQLite support
-- **Transactions** — ACID-compliant with savepoint support
-- **Query Profiling** — Built-in performance monitoring
+- **BaseModel ORM** dengan fillable/guarded, timestamps, soft delete, events
+- **Type Casting** — Konversi otomatis (int, float, bool, array, json, date)
+- **Lifecycle Events** — Hooks before/after save, create, update, delete
+- **Query Builder** — Fluent API untuk SELECT, INSERT, UPDATE, DELETE
+- **Multiple Connections** — Dukungan MySQL, PostgreSQL, SQLite
+- **Transactions** — ACID-compliant dengan savepoint support
+- **Query Profiling** — Monitoring performa bawaan
 
 ### 🔌 HTTP & Middleware
 
 - **Request Object** — Input, headers, files, authentication, CORS data
 - **Response Object** — HTML, JSON, XML, CSV, file downloads, compression
-- **6 Built-in Middleware**
+- **6 Middleware Bawaan**
   - CORS (cross-origin resource sharing)
   - CSRF (token validation)
   - Auth (JWT authentication)
   - Throttle (rate limiting)
   - PageCache (response caching)
   - Route (URI routing)
-- **Custom Middleware** — Easy creation of custom request/response processors
+- **Custom Middleware** — Pembuatan custom middleware dengan mudah
 
 ### 🛠️ Developer Experience
 
 - **Migration System** — Generate, run, rollback, refresh migrations
-- **Seeder System** — Populate databases with test/seed data
-- **CLI Commands** — Built-in commands for common tasks
-- **Error Handling** — Custom exception classes with logging
+- **Seeder System** — Populate database dengan data test/dummy
+- **CLI Commands** — Perintah bawaan untuk tugas umum
+- **Error Handling** — Custom exception classes dengan logging
 - **Support Utilities** — Collection, Pipeline, Helpers, File operations
-- **Comprehensive Logging** — Application, query, and error logging
+- **Comprehensive Logging** — Application, query, dan error logging
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Mulai Cepat
 
-### Requirements
+### Persyaratan
 
-- PHP 7.3 or higher
+- PHP 7.3 atau lebih tinggi
 - Composer
-- MySQL, PostgreSQL, or SQLite
+- MySQL, PostgreSQL, atau SQLite
 
-### Installation
+### Instalasi
 
 ```bash
 # Clone repository
@@ -83,17 +83,17 @@ composer install
 # Copy environment file
 cp .env.example .env
 
-# Configure database in .env
+# Konfigurasi database di .env
 # DB_CONFIG={"default":"mysql","connections":{"mysql":{"driver":"mysql","host":"localhost",...}}}
 
-# Run migrations
+# Jalankan migrations
 php sun migrate
 
-# Run seeders (optional)
+# Jalankan seeders (opsional)
 php sun seed
 ```
 
-### Create Your First Model
+### Buat Model Pertama Anda
 
 ```php
 // app/models/Product_model.php
@@ -111,7 +111,7 @@ class Product_model extends BaseModel {
 }
 ```
 
-### Create a Controller
+### Buat Controller
 
 ```php
 // app/controllers/ProductController.php
@@ -141,7 +141,7 @@ class ProductController extends Controller {
 }
 ```
 
-### Create a Migration
+### Buat Migration
 
 ```bash
 php sun migrate:create create_products_table
@@ -172,32 +172,32 @@ class CreateProductsTable extends Migration {
 
 ---
 
-## 📚 Documentation
+## 📚 Dokumentasi
 
-Full documentation is available in the `doc/` directory:
+Dokumentasi lengkap tersedia di direktori `doc/`:
 
-- **[INDEX.md](doc/INDEX.md)** — Master index and navigation guide
-- **[USAGE.md](doc/USAGE.md)** — Step-by-step setup and usage guide
-- **[API.md](doc/API.md)** — Complete method signature reference
-- **[EXAMPLES.md](doc/EXAMPLES.md)** — Code examples and patterns
-- **[CORE_BASEMODEL.md](doc/CORE_BASEMODEL.md)** — ORM documentation
-- **[CORE_CONTROLLER.md](doc/CORE_CONTROLLER.md)** — Controller documentation
-- **[HTTP_REQUEST_RESPONSE.md](doc/HTTP_REQUEST_RESPONSE.md)** — HTTP layer documentation
-- **[HTTP_MIDDLEWARE.md](doc/HTTP_MIDDLEWARE.md)** — Middleware documentation
-- **[DATABASE_QUERYBUILDER.md](doc/DATABASE_QUERYBUILDER.md)** — QueryBuilder documentation
-- **[DATABASE_CORE.md](doc/DATABASE_CORE.md)** — Database management documentation
-- **[SUPPORT_UTILITIES.md](doc/SUPPORT_UTILITIES.md)** — Utility classes documentation
-- **[CACHE_SECURITY_ADVANCED.md](doc/CACHE_SECURITY_ADVANCED.md)** — Cache, security, and advanced topics
+- **[INDEX.md](doc/INDEX.md)** — Master index dan panduan navigasi
+- **[USAGE.md](doc/USAGE.md)** — Panduan step-by-step setup dan penggunaan
+- **[API.md](doc/API.md)** — Referensi lengkap method signature
+- **[EXAMPLES.md](doc/EXAMPLES.md)** — Contoh kode dan pattern
+- **[CORE_BASEMODEL.md](doc/CORE_BASEMODEL.md)** — Dokumentasi ORM
+- **[CORE_CONTROLLER.md](doc/CORE_CONTROLLER.md)** — Dokumentasi Controller
+- **[HTTP_REQUEST_RESPONSE.md](doc/HTTP_REQUEST_RESPONSE.md)** — Dokumentasi HTTP layer
+- **[HTTP_MIDDLEWARE.md](doc/HTTP_MIDDLEWARE.md)** — Dokumentasi Middleware
+- **[DATABASE_QUERYBUILDER.md](doc/DATABASE_QUERYBUILDER.md)** — Dokumentasi QueryBuilder
+- **[DATABASE_CORE.md](doc/DATABASE_CORE.md)** — Dokumentasi manajemen database
+- **[SUPPORT_UTILITIES.md](doc/SUPPORT_UTILITIES.md)** — Dokumentasi utility classes
+- **[CACHE_SECURITY_ADVANCED.md](doc/CACHE_SECURITY_ADVANCED.md)** — Cache, security, dan topik advanced
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Arsitektur
 
-### Directory Structure
+### Struktur Direktori
 
 ```
 sun/
-├── app/                    # Application code
+├── app/                    # Kode aplikasi
 │   ├── controllers/        # HTTP request handlers
 │   ├── models/            # ORM models
 │   ├── views/             # PHP templates
@@ -217,25 +217,25 @@ sun/
 │   ├── seeders/          # Seeder files
 │   ├── logs/             # Application logs
 │   └── cache/            # Cache files
-├── doc/                  # Comprehensive documentation
+├── doc/                  # Dokumentasi lengkap
 └── tests/                # Unit/integration tests
 ```
 
-### Request Lifecycle
+### Lifecycle Request
 
 1. HTTP request → `public/index.php`
 2. Bootstrap/Kernel initialization
 3. Environment loading
 4. Middleware pipeline execution
 5. Reflection-based routing
-6. Controller instantiation with DI
-7. Action method execution
+6. Controller instantiation dengan DI
+7. Eksekusi action method
 8. Response rendering
-9. Response sent to client
+9. Response dikirim ke client
 
 ---
 
-## 💡 Example Use Cases
+## 💡 Contoh Use Cases
 
 ### REST API
 
@@ -255,7 +255,7 @@ class ApiProductController extends Controller {
 }
 ```
 
-### Authentication with JWT
+### Authentication dengan JWT
 
 ```php
 class AuthController extends Controller {
@@ -272,7 +272,7 @@ class AuthController extends Controller {
 }
 ```
 
-### Data Processing with Collections
+### Data Processing dengan Collections
 
 ```php
 $users = (new User_model())->getResultArray();
@@ -285,12 +285,12 @@ $activeAdults = Collection::make($users)
 
 ---
 
-## 🔒 Security Features
+## 🔒 Fitur Keamanan
 
-✓ **CSRF Protection** — Token-based cross-site request forgery prevention  
+✓ **CSRF Protection** — Pencegahan cross-site request forgery berbasis token  
 ✓ **CORS Configuration** — Configurable cross-origin resource sharing  
-✓ **JWT Authentication** — Secure token-based authentication  
-✓ **Rate Limiting** — Throttle middleware for API protection  
+✓ **JWT Authentication** — Autentikasi berbasis token yang aman  
+✓ **Rate Limiting** — Middleware throttle untuk proteksi API  
 ✓ **Input Validation** — Built-in request validation patterns  
 ✓ **SQL Injection Prevention** — Parameterized queries via QueryBuilder  
 ✓ **Password Hashing** — Bcrypt support via mutators  
@@ -298,20 +298,20 @@ $activeAdults = Collection::make($users)
 
 ---
 
-## ⚡ Performance
+## ⚡ Performa
 
-- **Query Caching** — File/Redis driver support
-- **Response Caching** — Full page/response caching with TTL
+- **Query Caching** — Dukungan File/Redis driver
+- **Response Caching** — Full page/response caching dengan TTL
 - **Query Profiling** — Built-in performance monitoring
-- **N+1 Prevention** — JOIN recommendations and examples
-- **Database Indexing** — Migration support for indexes
+- **N+1 Prevention** — JOIN recommendations dan examples
+- **Database Indexing** — Migration support untuk indexes
 - **Response Compression** — Gzip/Deflate support
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Component            | Technology                |
+| Komponen             | Teknologi                 |
 | -------------------- | ------------------------- |
 | Language             | PHP 7.3+                  |
 | Database             | MySQL, PostgreSQL, SQLite |
@@ -326,56 +326,56 @@ $activeAdults = Collection::make($users)
 
 ---
 
-## 📋 Requirements
+## 📋 Persyaratan
 
 - PHP >= 7.3
-- PDO extension for database support
-- Composer for dependency management
-- Web server (Apache, Nginx, etc.)
+- PDO extension untuk database support
+- Composer untuk dependency management
+- Web server (Apache, Nginx, dll)
 
 ---
 
-## 📄 License
+## 📄 Lisensi
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-## 👤 About
-
-**Project Owner:** Sun Solutions Corporation  
-**Lead Developer:** [Your Name]  
-**Contact:** [Your Email/Contact Information]  
-**Website:** [Your Website URL]
+Proyek ini dilisensikan di bawah MIT License - lihat file LICENSE untuk detail.
 
 ---
 
-## 🤝 Contributing
+## 👤 Tentang
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+**Pemilik Proyek:** Sun Solutions Corporation  
+**Lead Developer:** [Nama Anda]  
+**Kontak:** [Email/Informasi Kontak Anda]  
+**Website:** [URL Website Anda]
 
 ---
 
-## 📞 Support
+## 🤝 Kontribusi
 
-For issues, questions, or suggestions:
+Kontribusi sangat kami sambut! Silakan submit Pull Request.
+
+1. Fork repository
+2. Buat feature branch Anda (`git checkout -b feature/amazing-feature`)
+3. Commit perubahan Anda (`git commit -m 'Add amazing feature'`)
+4. Push ke branch (`git push origin feature/amazing-feature`)
+5. Buka Pull Request
+
+---
+
+## 📞 Dukungan
+
+Untuk issues, pertanyaan, atau saran:
 
 - **GitHub Issues:** [Report an issue](https://github.com/sunsolutionscorporate/sun/issues)
-- **Documentation:** [Read the full docs](doc/INDEX.md)
-- **Email:** [Your Support Email]
+- **Dokumentasi:** [Baca dokumentasi lengkap](doc/INDEX.md)
+- **Email:** [Email Dukungan Anda]
 
 ---
 
-## 🙏 Acknowledgments
+## 🙏 Ucapan Terima Kasih
 
-Built with inspiration from modern PHP frameworks like Laravel, with a focus on simplicity, performance, and control.
+Dibangun dengan inspirasi dari framework PHP modern seperti Laravel, dengan fokus pada kesederhanaan, performa, dan kontrol.
 
 ---
 
-**Made with ❤️ by Sun Solutions Corporation**
+**Dibuat dengan ❤️ oleh Sun Solutions Corporation**

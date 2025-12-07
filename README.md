@@ -343,10 +343,10 @@ Proyek ini dilisensikan di bawah MIT License - lihat file LICENSE untuk detail.
 
 ## 👤 Tentang
 
-**Pemilik Proyek:** Sun Solutions Corporation  
-**Lead Developer:** [Nama Anda]  
-**Kontak:** [Email/Informasi Kontak Anda]  
-**Website:** [URL Website Anda]
+**Pemilik Proyek:** PT. SUN Solutions Corp.
+**Lead Developer:** Sugeng Wahyu Widodo
+**Kontak:** sunsolutionscorporate@gmail.com
+**Website:** [www.sunsolutions.org](https://sunsolutions.org)
 
 ---
 
@@ -368,7 +368,7 @@ Untuk issues, pertanyaan, atau saran:
 
 - **GitHub Issues:** [Report an issue](https://github.com/sunsolutionscorporate/sun/issues)
 - **Dokumentasi:** [Baca dokumentasi lengkap](doc/INDEX.md)
-- **Email:** [Email Dukungan Anda]
+- **Email:** sunsolutionscorporate@gmail.com
 
 ---
 

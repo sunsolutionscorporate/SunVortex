@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Tambahkan ini untuk meneruskan Authorization
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]
+
+    # Routing ke folder public
+    RewriteRule ^$ public/ [L]
+    RewriteRule (.*) public/$1 [L]
+
+</IfModule>

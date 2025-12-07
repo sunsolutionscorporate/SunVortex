@@ -1,0 +1,20 @@
+# ===================================
+.env
+
+# Ignore file editor/IDE
+
+.vscode/
+.idea/
+.crossnote/
+db-example/
+storage/
+vendor/
+
+# Ignore sistem OS
+
+.DS_Store
+Thumbs.db
+
+# Ignore file log
+
+\*.log

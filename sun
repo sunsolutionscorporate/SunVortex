@@ -1,0 +1,124 @@
+<?php
+
+class CLI
+{
+   private static $instance = null;
+   private static $prop = [];
+   const RED = "\033[31m";
+   const YELLOW = "\033[33m";
+   const GREEN = "\033[32m";
+   const MAGENTA = "\033[35m";
+   const BLUE = "\033[34m";
+   const CYAN = "\033[36m";
+   const WHITE = "\033[0m";
+
+   private function __construct() {}
+
+   public static function init()
+   {
+      if (self::$instance === null) {
+         self::$instance = new self();
+         // Initialize CLI
+
+         $root = __DIR__;
+         $path_system = $root . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR;
+
+
+         $args = $_SERVER['argv'] ?? [];
+         array_shift($args); // array -> 0
+         $cmd = array_shift($args) ?? 'help'; // array -> 1
+         // $cmd = $args[1] ?? 'help';
+         self::attr('command', $cmd);
+         if ($cmd == 'test') {
+            $src = $args[0] ?? '';
+            // php sun test database
+            // php sun test --all
+
+
+            $source = [];
+            if ($src == '--all') {
+            } else {
+               // $path = $root . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . "test_" . $src . ".php";
+               $path = realpath($root . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . "test_" . $src . ".php");
+               $source[] = $path;
+            };
+            self::attr('execute', $source);
+         } elseif ($cmd == 'migrate') {
+            // 
+
+            // 
+            self::attr('execute', $args);
+         } else {
+            echo 'HELPER';
+         }
+         $index = realpath($path_system . 'index.php');
+         if (!$index) {
+            echo 'index.php not found';
+         };
+         require_once $index;
+         // echo print_r($_SERVER, true);
+      }
+      return self::$instance;
+   }
+
+   private static function attr($key, $value = null)
+   {
+      static $UNDEFINED = null;
+      if ($UNDEFINED === null) {
+         $UNDEFINED = new \stdClass();
+      }
+
+      $key = strtoupper($key);
+      if (func_num_args() === 1) {
+         return self::$prop[$key] ?? null;
+      }
+      self::$prop[$key] = $value;
+      return true;
+   }
+
+
+   public function get(string $key = '')
+   {
+      if (empty($key)) {
+         return self::$prop;
+      }
+      $key = strtoupper($key);
+      if (!array_key_exists($key, self::$prop)) {
+         throw new InvalidArgumentException("Key '$key' does not exist.");
+      }
+
+      return self::$prop[$key];
+   }
+
+
+   public static function print(...$args)
+   {
+      $message = '';
+      $color = self::WHITE;
+      foreach ($args as $arg) {
+         if (is_array($arg) || is_object($arg)) {
+            $message .= print_r($arg, true);
+            $message .= PHP_EOL;
+         } else {
+            $arg = (string)$arg;
+            if (
+               $arg === self::RED ||
+               $arg === self::YELLOW ||
+               $arg === self::GREEN ||
+               $arg === self::CYAN ||
+               $arg === self::MAGENTA ||
+               $arg === self::BLUE ||
+               $arg === self::WHITE
+            ) {
+               $color = $arg;
+            } else {
+               $message .= $arg . " ";
+            };
+         }
+      }
+      $reset = self::WHITE;
+      echo $color . $message . $reset . PHP_EOL;
+   }
+};
+CLI::init();
+exit;

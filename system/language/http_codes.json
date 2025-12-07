@@ -1,0 +1,622 @@
+{
+  "100": {
+    "id": {
+      "status": "Lanjutkan",
+      "message": "Permintaan diterima, silakan lanjutkan."
+    },
+    "en": {
+      "status": "Continue",
+      "message": "Request received, please continue."
+    }
+  },
+  "101": {
+    "id": {
+      "status": "Mengganti Protokol",
+      "message": "Beralih ke protokol lain sesuai permintaan."
+    },
+    "en": {
+      "status": "Switching Protocols",
+      "message": "Switching to another protocol as requested."
+    }
+  },
+  "102": {
+    "id": {
+      "status": "Memproses",
+      "message": "Permintaan sedang diproses."
+    },
+    "en": {
+      "status": "Processing",
+      "message": "Request is being processed."
+    }
+  },
+  "103": {
+    "id": {
+      "status": "Petunjuk Awal",
+      "message": "Memberikan petunjuk awal untuk permintaan."
+    },
+    "en": {
+      "status": "Early Hints",
+      "message": "Providing early hints for the request."
+    }
+  },
+  "200": {
+    "id": {
+      "status": "Berhasil",
+      "message": "Permintaan berhasil."
+    },
+    "en": {
+      "status": "OK",
+      "message": "Request was successful."
+    }
+  },
+  "201": {
+    "id": {
+      "status": "Dibuat",
+      "message": "Sumber daya baru berhasil dibuat."
+    },
+    "en": {
+      "status": "Created",
+      "message": "A new resource has been created."
+    }
+  },
+  "202": {
+    "id": {
+      "status": "Diterima",
+      "message": "Permintaan diterima tetapi belum diproses."
+    },
+    "en": {
+      "status": "Accepted",
+      "message": "Request accepted but not yet processed."
+    }
+  },
+  "203": {
+    "id": {
+      "status": "Informasi Non-Otoritatif",
+      "message": "Mengembalikan informasi dari sumber pihak ketiga."
+    },
+    "en": {
+      "status": "Non-Authoritative Information",
+      "message": "Returning information from a third-party source."
+    }
+  },
+  "204": {
+    "id": {
+      "status": "Tidak Ada Konten",
+      "message": "Permintaan berhasil, tidak ada konten untuk dikembalikan."
+    },
+    "en": {
+      "status": "No Content",
+      "message": "Request successful, no content to return."
+    }
+  },
+  "205": {
+    "id": {
+      "status": "Atur Ulang Konten",
+      "message": "Permintaan berhasil, silakan atur ulang tampilan."
+    },
+    "en": {
+      "status": "Reset Content",
+      "message": "Request successful, please reset the view."
+    }
+  },
+  "206": {
+    "id": {
+      "status": "Konten Parsial",
+      "message": "Respon parsial diberikan."
+    },
+    "en": {
+      "status": "Partial Content",
+      "message": "Partial response delivered."
+    }
+  },
+  "207": {
+    "id": {
+      "status": "Multi-Status",
+      "message": "Beberapa status dikembalikan."
+    },
+    "en": {
+      "status": "Multi-Status",
+      "message": "Multiple statuses returned."
+    }
+  },
+  "208": {
+    "id": {
+      "status": "Sudah Dilaporkan",
+      "message": "Sumber daya sudah dilaporkan."
+    },
+    "en": {
+      "status": "Already Reported",
+      "message": "Resource already reported."
+    }
+  },
+  "226": {
+    "id": {
+      "status": "IM Digunakan",
+      "message": "Respon menggunakan manipulasi instansi."
+    },
+    "en": {
+      "status": "IM Used",
+      "message": "Response uses instance-manipulations."
+    }
+  },
+  "300": {
+    "id": {
+      "status": "Pilihan Ganda",
+      "message": "Beberapa pilihan tersedia."
+    },
+    "en": {
+      "status": "Multiple Choices",
+      "message": "Multiple options available."
+    }
+  },
+  "301": {
+    "id": {
+      "status": "Dipindahkan Permanen",
+      "message": "Sumber daya dipindahkan secara permanen."
+    },
+    "en": {
+      "status": "Moved Permanently",
+      "message": "Resource moved permanently."
+    }
+  },
+  "302": {
+    "id": {
+      "status": "Ditemukan",
+      "message": "Sumber daya ditemukan di URI lain."
+    },
+    "en": {
+      "status": "Found",
+      "message": "Resource found under another URI."
+    }
+  },
+  "303": {
+    "id": {
+      "status": "Lihat Lainnya",
+      "message": "Lihat sumber daya lain."
+    },
+    "en": {
+      "status": "See Other",
+      "message": "See another resource."
+    }
+  },
+  "304": {
+    "id": {
+      "status": "Tidak Dimodifikasi",
+      "message": "Sumber daya tidak dimodifikasi."
+    },
+    "en": {
+      "status": "Not Modified",
+      "message": "Resource not modified."
+    }
+  },
+  "305": {
+    "id": {
+      "status": "Gunakan Proksi",
+      "message": "Sumber daya harus diakses melalui proksi."
+    },
+    "en": {
+      "status": "Use Proxy",
+      "message": "Resource must be accessed through proxy."
+    }
+  },
+  "307": {
+    "id": {
+      "status": "Pengalihan Sementara",
+      "message": "Sumber daya dialihkan sementara."
+    },
+    "en": {
+      "status": "Temporary Redirect",
+      "message": "Resource temporarily redirected."
+    }
+  },
+  "308": {
+    "id": {
+      "status": "Pengalihan Permanen",
+      "message": "Sumber daya dialihkan permanen."
+    },
+    "en": {
+      "status": "Permanent Redirect",
+      "message": "Resource permanently redirected."
+    }
+  },
+  "400": {
+    "id": {
+      "status": "Permintaan Buruk",
+      "message": "Sintaks permintaan tidak valid."
+    },
+    "en": {
+      "status": "Bad Request",
+      "message": "Invalid request syntax."
+    }
+  },
+  "401": {
+    "id": {
+      "status": "Tidak Sah",
+      "message": "Autentikasi diperlukan."
+    },
+    "en": {
+      "status": "Unauthorized",
+      "message": "Authentication required."
+    }
+  },
+  "402": {
+    "id": {
+      "status": "Pembayaran Diperlukan",
+      "message": "Pembayaran diperlukan untuk mengakses sumber daya."
+    },
+    "en": {
+      "status": "Payment Required",
+      "message": "Payment required to access resource."
+    }
+  },
+  "403": {
+    "id": {
+      "status": "Dilarang",
+      "message": "Akses ditolak."
+    },
+    "en": {
+      "status": "Forbidden",
+      "message": "Access denied."
+    }
+  },
+  "404": {
+    "id": {
+      "status": "Tidak Ditemukan",
+      "message": "Sumber daya tidak ditemukan."
+    },
+    "en": {
+      "status": "Not Found",
+      "message": "Resource not found."
+    }
+  },
+  "405": {
+    "id": {
+      "status": "Metode Tidak Diizinkan",
+      "message": "Metode HTTP tidak diizinkan."
+    },
+    "en": {
+      "status": "Method Not Allowed",
+      "message": "HTTP method not allowed."
+    }
+  },
+  "406": {
+    "id": {
+      "status": "Tidak Dapat Diterima",
+      "message": "Sumber daya tidak dapat diterima."
+    },
+    "en": {
+      "status": "Not Acceptable",
+      "message": "Resource not acceptable."
+    }
+  },
+  "407": {
+    "id": {
+      "status": "Autentikasi Proksi Diperlukan",
+      "message": "Autentikasi dengan proksi diperlukan."
+    },
+    "en": {
+      "status": "Proxy Authentication Required",
+      "message": "Authentication with proxy required."
+    }
+  },
+  "408": {
+    "id": {
+      "status": "Permintaan Habis Waktu",
+      "message": "Permintaan habis waktu."
+    },
+    "en": {
+      "status": "Request Timeout",
+      "message": "Request timed out."
+    }
+  },
+  "409": {
+    "id": {
+      "status": "Konflik",
+      "message": "Permintaan bertentangan dengan keadaan saat ini."
+    },
+    "en": {
+      "status": "Conflict",
+      "message": "Request conflicts with current state."
+    }
+  },
+  "410": {
+    "id": {
+      "status": "Hilang",
+      "message": "Sumber daya tidak tersedia lagi."
+    },
+    "en": {
+      "status": "Gone",
+      "message": "Resource is no longer available."
+    }
+  },
+  "411": {
+    "id": {
+      "status": "Panjang Diperlukan",
+      "message": "Panjang konten diperlukan."
+    },
+    "en": {
+      "status": "Length Required",
+      "message": "Content length required."
+    }
+  },
+  "412": {
+    "id": {
+      "status": "Prasyarat Gagal",
+      "message": "Prasyarat gagal."
+    },
+    "en": {
+      "status": "Precondition Failed",
+      "message": "Precondition failed."
+    }
+  },
+  "413": {
+    "id": {
+      "status": "Muatan Terlalu Besar",
+      "message": "Muatan permintaan terlalu besar."
+    },
+    "en": {
+      "status": "Payload Too Large",
+      "message": "Request payload too large."
+    }
+  },
+  "414": {
+    "id": {
+      "status": "URI Terlalu Panjang",
+      "message": "URI permintaan terlalu panjang."
+    },
+    "en": {
+      "status": "URI Too Long",
+      "message": "Request URI too long."
+    }
+  },
+  "415": {
+    "id": {
+      "status": "Jenis Media Tidak Didukung",
+      "message": "Jenis media tidak didukung."
+    },
+    "en": {
+      "status": "Unsupported Media Type",
+      "message": "Unsupported media type."
+    }
+  },
+  "416": {
+    "id": {
+      "status": "Rentang Tidak Memuaskan",
+      "message": "Rentang yang diminta tidak memuaskan."
+    },
+    "en": {
+      "status": "Range Not Satisfiable",
+      "message": "Requested range not satisfiable."
+    }
+  },
+  "417": {
+    "id": {
+      "status": "Ekspektasi Gagal",
+      "message": "Ekspektasi gagal."
+    },
+    "en": {
+      "status": "Expectation Failed",
+      "message": "Expectation failed."
+    }
+  },
+  "418": {
+    "id": {
+      "status": "Saya Teapot",
+      "message": "Server menolak menyeduh kopi dengan teko."
+    },
+    "en": {
+      "status": "I'm a teapot",
+      "message": "The server refuses to brew coffee with a teapot."
+    }
+  },
+  "421": {
+    "id": {
+      "status": "Permintaan Salah Arah",
+      "message": "Permintaan dikirim ke server yang salah."
+    },
+    "en": {
+      "status": "Misdirected Request",
+      "message": "Request sent to wrong server."
+    }
+  },
+  "422": {
+    "id": {
+      "status": "Entitas Tidak Dapat Diproses",
+      "message": "Tidak dapat memproses entitas."
+    },
+    "en": {
+      "status": "Unprocessable Entity",
+      "message": "Cannot process entity."
+    }
+  },
+  "423": {
+    "id": {
+      "status": "Terkunci",
+      "message": "Sumber daya terkunci."
+    },
+    "en": {
+      "status": "Locked",
+      "message": "Resource is locked."
+    }
+  },
+  "424": {
+    "id": {
+      "status": "Ketergantungan Gagal",
+      "message": "Permintaan gagal karena ketergantungan."
+    },
+    "en": {
+      "status": "Failed Dependency",
+      "message": "Request failed due to dependency."
+    }
+  },
+  "425": {
+    "id": {
+      "status": "Terlalu Awal",
+      "message": "Permintaan dikirim terlalu awal."
+    },
+    "en": {
+      "status": "Too Early",
+      "message": "Request sent too early."
+    }
+  },
+  "426": {
+    "id": {
+      "status": "Peningkatan Diperlukan",
+      "message": "Klien harus meningkatkan protokol."
+    },
+    "en": {
+      "status": "Upgrade Required",
+      "message": "Client must upgrade protocol."
+    }
+  },
+  "428": {
+    "id": {
+      "status": "Prasyarat Diperlukan",
+      "message": "Prasyarat diperlukan."
+    },
+    "en": {
+      "status": "Precondition Required",
+      "message": "Precondition required."
+    }
+  },
+  "429": {
+    "id": {
+      "status": "Terlalu Banyak Permintaan",
+      "message": "Terlalu banyak permintaan dikirim."
+    },
+    "en": {
+      "status": "Too Many Requests",
+      "message": "Too many requests sent."
+    }
+  },
+  "431": {
+    "id": {
+      "status": "Bidang Header Permintaan Terlalu Besar",
+      "message": "Header permintaan terlalu besar."
+    },
+    "en": {
+      "status": "Request Header Fields Too Large",
+      "message": "Request headers too large."
+    }
+  },
+  "451": {
+    "id": {
+      "status": "Tidak Tersedia Karena Alasan Hukum",
+      "message": "Sumber daya diblokir karena alasan hukum."
+    },
+    "en": {
+      "status": "Unavailable For Legal Reasons",
+      "message": "Resource blocked for legal reasons."
+    }
+  },
+  "500": {
+    "id": {
+      "status": "Kesalahan Server Internal",
+      "message": "Server mengalami kesalahan."
+    },
+    "en": {
+      "status": "Internal Server Error",
+      "message": "Server encountered an error."
+    }
+  },
+  "501": {
+    "id": {
+      "status": "Belum Diimplementasikan",
+      "message": "Fitur belum diimplementasikan."
+    },
+    "en": {
+      "status": "Not Implemented",
+      "message": "Feature not implemented."
+    }
+  },
+  "502": {
+    "id": {
+      "status": "Gateway Buruk",
+      "message": "Respon tidak valid dari gateway."
+    },
+    "en": {
+      "status": "Bad Gateway",
+      "message": "Invalid response from gateway."
+    }
+  },
+  "503": {
+    "id": {
+      "status": "Layanan Tidak Tersedia",
+      "message": "Layanan sementara tidak tersedia."
+    },
+    "en": {
+      "status": "Service Unavailable",
+      "message": "Service temporarily unavailable."
+    }
+  },
+  "504": {
+    "id": {
+      "status": "Gateway Habis Waktu",
+      "message": "Gateway habis waktu."
+    },
+    "en": {
+      "status": "Gateway Timeout",
+      "message": "Gateway timed out."
+    }
+  },
+  "505": {
+    "id": {
+      "status": "Versi HTTP Tidak Didukung",
+      "message": "Versi HTTP tidak didukung."
+    },
+    "en": {
+      "status": "HTTP Version Not Supported",
+      "message": "HTTP version not supported."
+    }
+  },
+  "506": {
+    "id": {
+      "status": "Varian Juga Bernegosiasi",
+      "message": "Negosiasi varian gagal."
+    },
+    "en": {
+      "status": "Variant Also Negotiates",
+      "message": "Variant negotiation failed."
+    }
+  },
+  "507": {
+    "id": {
+      "status": "Penyimpanan Tidak Cukup",
+      "message": "Penyimpanan tidak cukup."
+    },
+    "en": {
+      "status": "Insufficient Storage",
+      "message": "Not enough storage."
+    }
+  },
+  "508": {
+    "id": {
+      "status": "Loop Terdeteksi",
+      "message": "Loop tak terbatas terdeteksi."
+    },
+    "en": {
+      "status": "Loop Detected",
+      "message": "Infinite loop detected."
+    }
+  },
+  "510": {
+    "id": {
+      "status": "Tidak Diperluas",
+      "message": "Ekstensi lebih lanjut diperlukan."
+    },
+    "en": {
+      "status": "Not Extended",
+      "message": "Further extensions required."
+    }
+  },
+  "511": {
+    "id": {
+      "status": "Autentikasi Jaringan Diperlukan",
+      "message": "Autentikasi jaringan diperlukan."
+    },
+    "en": {
+      "status": "Network Authentication Required",
+      "message": "Network authentication required."
+    }
+  }
+}

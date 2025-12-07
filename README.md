@@ -343,10 +343,10 @@ Proyek ini dilisensikan di bawah MIT License - lihat file LICENSE untuk detail.
 
 ## 👤 Tentang
 
-**Pemilik Proyek:** PT. SUN Solutions Corp.
-**Lead Developer:** Sugeng Wahyu Widodo
-**Kontak:** sunsolutionscorporate@gmail.com
-**Website:** [www.sunsolutions.org](https://sunsolutions.org)
+**Pemilik Proyek:** PT. SUN Solutions Corp. 
+**Lead Developer:** Sugeng Wahyu Widodo 
+**Kontak:** sunsolutionscorporate@gmail.com 
+**Website:** [www.sunsolutions.org](https://sunsolutions.org) 
 
 ---
 

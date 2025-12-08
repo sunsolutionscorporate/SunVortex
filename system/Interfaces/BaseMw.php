@@ -22,7 +22,7 @@ abstract class BaseMw
    /**
     * Request object - otomatis tersedia di semua middleware
     */
-   public $request;
+   protected $request;
 
    /**
     * Constructor - optional untuk custom initialization
@@ -30,6 +30,5 @@ abstract class BaseMw
    public function __construct()
    {
       $this->request = Request::init();
-      // slog('OKE', $this->request);
    }
 }

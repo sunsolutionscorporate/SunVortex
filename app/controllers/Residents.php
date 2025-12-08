@@ -1,5 +1,10 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+
 class Residents extends Controller
 {
 
@@ -30,5 +35,51 @@ class Residents extends Controller
    {
       $data = $this->penduduk->delete($id);
       redirect('residents');
+   }
+
+   public function email()
+   {
+      // require 'PHPMailer/src/PHPMailer.php';
+      // require 'PHPMailer/src/SMTP.php';
+      // require 'PHPMailer/src/Exception.php';
+
+
+      $mail = new PHPMailer(true);
+
+      try {
+         // Mode SMTP
+         $mail->isSMTP();
+         $mail->Host       = 'smtp.gmail.com';
+         $mail->SMTPAuth   = true;
+         $mail->Username   = 'sunsolutioncorporate@gmail.com';  // email akun SMTP mu
+         $mail->Password   = 'uncj ldag hard jzbz';         // password akun SMTP
+         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+         $mail->Port       = 587;
+         $mail->SMTPDebug = 3;
+         $mail->Debugoutput = 'html'; // biar tampilnya rapi
+
+
+         // Pengirim
+         // $mail->setFrom('noreply@domainmu.com', 'Nama Pengirim');
+         $mail->setFrom('from@example.com', 'Mailer');
+
+         // Penerima
+         $mail->addAddress('sugengwahyuwidodo9@gmail.com');
+
+         $mail->addReplyTo('no-reply@domainmu.com', 'No Reply');
+         $mail->addCC('cc@example.com', 'Kepala Kampung');
+
+
+         // Isi
+         $mail->isHTML(true);
+         $mail->Subject = 'Judul Email';
+         $mail->Body    = '<p>Halo, ini email dari PHPMailer!</p>';
+
+         // Kirim
+         $mail->send();
+         echo "Email terkirim!";
+      } catch (Exception $e) {
+         echo "Gagal: {$mail->ErrorInfo}";
+      }
    }
 }

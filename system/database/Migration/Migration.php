@@ -72,6 +72,21 @@ abstract class Migration
    }
 
    /**
+    * Create table only if not exists (idempotent helper)
+    */
+   protected function createIfNotExists(string $table, callable $callback): void
+   {
+      if (!$this->schema->hasTable($table)) {
+         $this->create($table, $callback);
+      } else {
+         // Helpful feedback when running via CLI
+         if (class_exists('CLI')) {
+            CLI::print("Skipping create: table `{$table}` already exists.", CLI::YELLOW);
+         }
+      }
+   }
+
+   /**
     * Modify existing table
     * 
     * @param string $table

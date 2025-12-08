@@ -175,6 +175,32 @@ Dokumentasi lengkap Database singleton, connections management, dan transactions
 
 ---
 
+#### [MIGRATION.md](./MIGRATION.md) — Database Migrations & Seeding
+
+Dokumentasi lengkap Database migrations untuk version control skema database, dan data seeding untuk initial data.
+
+**Topics:**
+
+- Migration overview & workflow
+- Setup & folder structure
+- Membuat migration files (create/alter/drop)
+- Blueprint API (columns, indexes, constraints, foreign keys)
+- CLI commands (make, run, rollback, refresh, fresh)
+- Column types & modifiers
+- Indexes & primary keys
+- Foreign key relationships & cascade
+- Rollback & revert strategies
+- Seeding data with seeders
+- Best practices (one change per file, immutability, testing)
+- Practical examples (blog app: users, posts, comments)
+- Error handling & recovery
+
+**Ideal untuk:** Developers yang perlu mengelola database schema dengan version control, team collaboration, dan deployment automation.
+
+**Start:** [Baca MIGRATION.md →](./MIGRATION.md)
+
+---
+
 ### Support & Utilities
 
 #### [SUPPORT_UTILITIES.md](./SUPPORT_UTILITIES.md) — Helper Classes & Functions
@@ -201,7 +227,7 @@ Dokumentasi lengkap Collection, Pipeline, Helpers, dan File utilities.
   - URL & config access
   - Reflection helpers
   - Logging (slog)
-- File class
+- File class — [File.md](./File.md)
   - MIME type detection
   - File operations (exists, size, extension, directory)
 
@@ -450,6 +476,10 @@ sun/
 - Read: [HTTP_REQUEST_RESPONSE.md](./HTTP_REQUEST_RESPONSE.md)
 - Example: [EXAMPLES.md](./EXAMPLES.md) → CRUD Implementation
 
+**...find files by name or content**
+
+- Read: [File.md](./File.md) → Advanced Options & Examples (cara mencari file yang mengandung teks/regex, mis. 'tes\_')
+
 **...query the database**
 
 - Read: [DATABASE_QUERYBUILDER.md](./DATABASE_QUERYBUILDER.md)
@@ -476,13 +506,14 @@ sun/
 
 **...migrate database**
 
-- Read: [USAGE.md](./USAGE.md) → Database Migrations
-- Reference: [API.md](./API.md) → Migration API
+- Read: [MIGRATION.md](./MIGRATION.md) → Overview & Setup
+- Read: [MIGRATION.md](./MIGRATION.md) → CLI Commands & API Blueprint
+- Example: [MIGRATION.md](./MIGRATION.md) → Contoh Praktis (Blog App)
 
 **...seed data**
 
-- Read: [USAGE.md](./USAGE.md) → Data Seeding
-- Example: [EXAMPLES.md](./EXAMPLES.md) → Seeder Usage
+- Read: [MIGRATION.md](./MIGRATION.md) → Seeding Data
+- Example: [MIGRATION.md](./MIGRATION.md) → Contoh Seeder
 
 **...deploy to production**
 
@@ -568,21 +599,22 @@ Silakan report atau contribute improvements!
 
 ## 📋 Documentation File Index
 
-| File                       | Purpose             | Size       | Audience            |
-| -------------------------- | ------------------- | ---------- | ------------------- |
-| USAGE.md                   | Step-by-step guide  | ~500 lines | Beginners           |
-| API.md                     | Method signatures   | ~400 lines | All developers      |
-| EXAMPLES.md                | Code samples        | ~600 lines | Learners            |
-| CORE_BASEMODEL.md          | ORM documentation   | ~800 lines | Backend developers  |
-| CORE_CONTROLLER.md         | Request handlers    | ~400 lines | Web developers      |
-| HTTP_REQUEST_RESPONSE.md   | HTTP abstraction    | ~600 lines | Web developers      |
-| HTTP_MIDDLEWARE.md         | Middleware pipeline | ~700 lines | Advanced users      |
-| DATABASE_QUERYBUILDER.md   | Query building      | ~800 lines | Database developers |
-| DATABASE_CORE.md           | Database management | ~600 lines | Advanced users      |
-| SUPPORT_UTILITIES.md       | Helper classes      | ~500 lines | All developers      |
-| CACHE_SECURITY_ADVANCED.md | Cache & security    | ~900 lines | Advanced users      |
+| File                       | Purpose              | Size       | Audience            |
+| -------------------------- | -------------------- | ---------- | ------------------- |
+| USAGE.md                   | Step-by-step guide   | ~500 lines | Beginners           |
+| API.md                     | Method signatures    | ~400 lines | All developers      |
+| EXAMPLES.md                | Code samples         | ~600 lines | Learners            |
+| CORE_BASEMODEL.md          | ORM documentation    | ~800 lines | Backend developers  |
+| CORE_CONTROLLER.md         | Request handlers     | ~400 lines | Web developers      |
+| HTTP_REQUEST_RESPONSE.md   | HTTP abstraction     | ~600 lines | Web developers      |
+| HTTP_MIDDLEWARE.md         | Middleware pipeline  | ~700 lines | Advanced users      |
+| DATABASE_QUERYBUILDER.md   | Query building       | ~800 lines | Database developers |
+| DATABASE_CORE.md           | Database management  | ~600 lines | Advanced users      |
+| MIGRATION.md               | Migrations & seeding | ~700 lines | All developers      |
+| SUPPORT_UTILITIES.md       | Helper classes       | ~500 lines | All developers      |
+| CACHE_SECURITY_ADVANCED.md | Cache & security     | ~900 lines | Advanced users      |
 
-**Total Documentation:** 7,200+ lines of comprehensive, production-ready documentation.
+**Total Documentation:** 7,900+ lines of comprehensive, production-ready documentation.
 
 ---
 

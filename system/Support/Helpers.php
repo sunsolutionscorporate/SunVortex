@@ -245,6 +245,38 @@ if (!function_exists('isVersionString')) {
    }
 };
 
+if (!function_exists('isRegex')) {
+   function isRegex(string $str): bool
+   {
+      $delimiters = ['/', '#', '~', '%', '!'];
+
+      $first = substr($str, 0, 1);
+
+      if (!in_array($first, $delimiters)) {
+         return false;
+      }
+
+      // Cari posisi delimiter penutup (sama dengan delimiter pembuka)
+      // tapi tidak pada posisi terakhir karena bisa ada modifier
+      $len = strlen($str);
+      $pos = strrpos($str, $first);
+
+      if ($pos === 0) {
+         return false; // tidak ditemukan penutup
+      }
+
+      // Ambil bagian setelah delimiter penutup
+      $modifiers = substr($str, $pos + 1);
+
+      // Validasi modifier regex PHP
+      if ($modifiers !== '' && !preg_match('/^[imsxuADSUXJ]*$/', $modifiers)) {
+         return false;
+      }
+
+      // Pastikan preg_match tidak error
+      return @preg_match($str, '') !== false;
+   }
+};
 if (!function_exists('isJson')) {
    function isJson(string $string): bool
    {

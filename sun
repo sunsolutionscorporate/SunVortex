@@ -20,43 +20,115 @@ class CLI
          self::$instance = new self();
          // Initialize CLI
 
-         $root = __DIR__;
-         $path_system = $root . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR;
+         $root = __DIR__ . DIRECTORY_SEPARATOR;
+         $path_system = $root  . 'system' . DIRECTORY_SEPARATOR;
+         $bootstrap = realpath($path_system . 'Bootstrap.php');
+         if (!$bootstrap) {
+            echo "Bootstrap.php not found";
+            exit(1);
+         };
+
+         require_once $bootstrap;
+         $kernel = new Kernel();
+
+         // Detect if terminal supports ANSI colors. On plain Windows consoles
+         // ANSI escape sequences are often not supported; disable colors
+         // when not available to avoid printing raw escape codes.
+         $enableColors = true;
+         if (stripos(PHP_OS, 'WIN') === 0) {
+            $ansicon = getenv('ANSICON');
+            $conemu = getenv('ConEmuANSI');
+            $term = getenv('TERM');
+            if ($ansicon === false && strtoupper($conemu) !== 'ON' && !$term) {
+               $enableColors = false;
+            };
+         };
+         self::attr('useColors', $enableColors);
 
 
          $args = $_SERVER['argv'] ?? [];
          array_shift($args); // array -> 0
          $cmd = array_shift($args) ?? 'help'; // array -> 1
-         // $cmd = $args[1] ?? 'help';
          self::attr('command', $cmd);
          if ($cmd == 'test') {
-            $src = $args[0] ?? '';
+            $src = array_shift($args) ?? ''; // array -> 0
             // php sun test database
             // php sun test --all
 
-
             $source = [];
             if ($src == '--all') {
+               $files = File::scanFiles($root . DIRECTORY_SEPARATOR . 'tests');
             } else {
-               // $path = $root . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . "test_" . $src . ".php";
-               $path = realpath($root . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . "test_" . $src . ".php");
-               $source[] = $path;
+               if (empty($src)) {
+                  self::print('command argument invalid', self::RED);
+                  exit(1);
+               } else {
+                  if (!isRegex($src)) {
+                     $src = preg_replace('/^test_/i', '', $src);
+                     $src  = '/^test_' . $src . '$/i';
+                  };
+                  $files = File::scanFiles(
+                     $root . DIRECTORY_SEPARATOR . 'tests',
+                     'php',
+                     false,
+                     [
+                        'namePattern' => $src
+                     ]
+                  );
+               };
             };
-            self::attr('execute', $source);
-         } elseif ($cmd == 'migrate') {
-            // 
+            foreach ($files->toArray() as $key => $value) {
+               $source[] = [
+                  'path' => $value['location'],
+                  'name' => $value['name']
+               ];
+            };
 
+            // self::attr('execute', $source);
+            // self::attr('argument', $args);
+
+
+            self::print("Running " . count($source) . " test(s)...\n", self::MAGENTA);
+            foreach ($source as $key => $value) {
+               self::print("::Executing [{$key}] {$value['path']}...", self::CYAN);
+               require_once $value['path'];
+
+               $src = ucfirst(preg_replace('/^test_/i', '', $value['name']));
+               self::print("::{$src} Testing finished.", self::CYAN);
+            }
+         } elseif ($cmd == 'migrate') {
+            $sub = $args[0] ?? '';
+            self::print("Running {$cmd} [{$sub}]...\n", self::MAGENTA);
             // 
-            self::attr('execute', $args);
+            // Prefer core Database Migration folder, fallback to storage migrations
+            $path_migration = realpath(CORE_PATH . 'Database' . DIRECTORY_SEPARATOR . 'Migration' . DIRECTORY_SEPARATOR);
+            if (!$path_migration) {
+               $alt = realpath($root . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations');
+               $path_migration = $alt ?: null;
+            }
+
+            if ($path_migration) {
+               $files = File::scanFiles($path_migration);
+               foreach ($files->toArray() as $key => $value) {
+                  require_once $value['location'];
+               };
+            } else {
+               self::print('Migration folder not found: ' . CORE_PATH . 'Database' . DIRECTORY_SEPARATOR . 'Migration', self::YELLOW);
+            }
+
+            MigrationCLI::run(...$args);
+            // self::print($cmd, self::RED);
+            // echo print_r($files, true);
+            // 
          } else {
             echo 'HELPER';
-         }
-         $index = realpath($path_system . 'index.php');
-         if (!$index) {
-            echo 'index.php not found';
          };
-         require_once $index;
-         // echo print_r($_SERVER, true);
+
+
+         self::print("\nfinished {$cmd}", self::MAGENTA);
+         exit(0);
+
+         // $kernel->boot();
       }
       return self::$instance;
    }
@@ -97,7 +169,7 @@ class CLI
       $color = self::WHITE;
       foreach ($args as $arg) {
          if (is_array($arg) || is_object($arg)) {
-            $message .= print_r($arg, true);
+            $message .= json_encode($arg);
             $message .= PHP_EOL;
          } else {
             $arg = (string)$arg;
@@ -117,6 +189,12 @@ class CLI
          }
       }
       $reset = self::WHITE;
+      $useColors = self::attr('useColors') ?? true;
+      if (!$useColors) {
+         // strip color sequences when colors are disabled
+         $color = '';
+         $reset = '';
+      }
       echo $color . $message . $reset . PHP_EOL;
    }
 };

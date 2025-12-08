@@ -29,6 +29,77 @@ class MigrationManager
    }
 
    /**
+    * Mark a migration as executed without running its code.
+    * Useful when the table/schema already exists and you want to sync state.
+    */
+   public function markAsExecuted(string $migrationName, ?int $batch = null): bool
+   {
+      $batch = $batch ?? $this->getNextBatch();
+      $sql = "INSERT INTO `{$this->table}` (migration, batch, executed_at) VALUES (?, ?, ?)";
+      $this->db->insert($sql, [$migrationName, $batch, date('Y-m-d H:i:s')]);
+      return true;
+   }
+
+   /**
+    * Scan migration files and if corresponding tables already exist in DB,
+    * mark those migrations as executed. This helps keep migration history
+    * in sync when tables were created manually or in other environments.
+    *
+    * It only processes migration files that look like `*_create_<table>_table` pattern.
+    */
+   public function syncWithDatabase(): array
+   {
+      $results = [];
+      $all = $this->getAllMigrations();
+      $executed = $this->getExecutedMigrations();
+      $executedNames = array_column($executed, 'migration');
+
+      foreach ($all as $migration) {
+         if (in_array($migration['name'], $executedNames)) continue;
+
+         // Try to detect table name from filename pattern: *_create_<table>_table
+         if (preg_match('/create_([a-z0-9_]+)_table$/i', $migration['name'], $m)) {
+            $table = $m[1];
+            $schema = new Schema($this->db);
+            if ($schema->hasTable($table)) {
+               $this->markAsExecuted($migration['name']);
+               $results[] = ['migration' => $migration['name'], 'action' => 'marked'];
+            }
+         }
+      }
+
+      return $results;
+   }
+
+   /**
+    * Find migration(s) that likely create or affect the given table name.
+    * Returns array of migration file info (file, path, name).
+    */
+   public function findMigrationsByTable(string $tableName): array
+   {
+      $all = $this->getAllMigrations();
+      $found = [];
+
+      foreach ($all as $migration) {
+         // quick heuristic: filename contains table name
+         if (stripos($migration['name'], $tableName) !== false) {
+            $found[] = $migration;
+            continue;
+         }
+
+         // fallback: try to search file content for create('table') or table('table') patterns
+         if (file_exists($migration['path'])) {
+            $content = file_get_contents($migration['path']);
+            if (preg_match("/create\(\s*'{$tableName}'|create\(\s*\"{$tableName}\"|table\(\s*'{$tableName}'/i", $content)) {
+               $found[] = $migration;
+            }
+         }
+      }
+
+      return $found;
+   }
+
+   /**
     * Get all migration files
     */
    public function getAllMigrations(): array

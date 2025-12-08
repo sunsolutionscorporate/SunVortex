@@ -231,24 +231,24 @@ class Kernel
       $cli = CLI::init();
 
       if ($cli->get('COMMAND') === 'test') {
-         $exec = $cli->get('execute');
+         // $exec = $cli->get('execute');
 
-         foreach ($exec as $key => $value) {
-            require_once $value;
-            // echo $key .  $value . "\n";
-         }
+         // foreach ($exec as $key => $value) {
+         //    require_once $value;
+         //    // echo $key .  $value . "\n";
+         // }
 
          // echo print_r($exec, true);
       } elseif ($cli->get('COMMAND') === 'migrate') {
-         $path_migration = realpath(CORE_PATH . 'Database' . DIRECTORY_SEPARATOR . 'migration' . DIRECTORY_SEPARATOR);
-         // echo $path_migration;
-         loadFiles($path_migration, 'php', false);
+         // $path_migration = realpath(CORE_PATH . 'Database' . DIRECTORY_SEPARATOR . 'migration' . DIRECTORY_SEPARATOR);
+         // // echo $path_migration;
+         // loadFiles($path_migration, 'php', false);
 
-         MigrationCLI::run(...$cli->get('execute'));
+         // MigrationCLI::run(...$cli->get('execute'));
       }
    }
 
-   public function run()
+   public function boot()
    {
       ///////////////////////////////////////////
       ///// MIDDLEWARE PIPELINE /////////////////

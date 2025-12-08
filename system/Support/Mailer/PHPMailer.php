@@ -19,7 +19,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-namespace PHPMailer\PHPMailer;
+// namespace PHPMailer\PHPMailer;
 
 /**
  * PHPMailer - PHP email creation and transport class.
@@ -405,7 +405,7 @@ class PHPMailer
      *
      * @var int
      */
-    public $SMTPDebug = 0;
+    // public $SMTPDebug = 0;
 
     /**
      * How to handle debug output.
@@ -431,7 +431,7 @@ class PHPMailer
      *
      * @var string|callable|\Psr\Log\LoggerInterface
      */
-    public $Debugoutput = 'echo';
+    // public $Debugoutput = 'echo';
 
     /**
      * Whether to keep the SMTP connection open after each message.
@@ -847,7 +847,7 @@ class PHPMailer
             $this->exceptions = (bool) $exceptions;
         }
         //Pick an appropriate debug output format automatically
-        $this->Debugoutput = (strpos(PHP_SAPI, 'cli') !== false ? 'echo' : 'html');
+        // $this->Debugoutput = (strpos(PHP_SAPI, 'cli') !== false ? 'echo' : 'html');
     }
 
     /**
@@ -910,52 +910,52 @@ class PHPMailer
      */
     protected function edebug($str)
     {
-        if ($this->SMTPDebug <= 0) {
-            return;
-        }
-        //Is this a PSR-3 logger?
-        if ($this->Debugoutput instanceof \Psr\Log\LoggerInterface) {
-            $this->Debugoutput->debug(rtrim($str, "\r\n"));
+        // if ($this->SMTPDebug <= 0) {
+        //     return;
+        // }
+        // //Is this a PSR-3 logger?
+        // if ($this->Debugoutput instanceof \Psr\Log\LoggerInterface) {
+        //     $this->Debugoutput->debug(rtrim($str, "\r\n"));
 
-            return;
-        }
-        //Avoid clash with built-in function names
-        if (is_callable($this->Debugoutput) && !in_array($this->Debugoutput, ['error_log', 'html', 'echo'])) {
-            call_user_func($this->Debugoutput, $str, $this->SMTPDebug);
+        //     return;
+        // }
+        // //Avoid clash with built-in function names
+        // if (is_callable($this->Debugoutput) && !in_array($this->Debugoutput, ['error_log', 'html', 'echo'])) {
+        //     call_user_func($this->Debugoutput, $str, $this->SMTPDebug);
 
-            return;
-        }
-        switch ($this->Debugoutput) {
-            case 'error_log':
-                //Don't output, just log
-                /** @noinspection ForgottenDebugOutputInspection */
-                error_log($str);
-                break;
-            case 'html':
-                //Cleans up output a bit for a better looking, HTML-safe output
-                echo htmlentities(
-                    preg_replace('/[\r\n]+/', '', $str),
-                    ENT_QUOTES,
-                    'UTF-8'
-                ), "<br>\n";
-                break;
-            case 'echo':
-            default:
-                //Normalize line breaks
-                $str = preg_replace('/\r\n|\r/m', "\n", $str);
-                echo gmdate('Y-m-d H:i:s'),
-                "\t",
-                //Trim trailing space
-                trim(
-                    //Indent for readability, except for trailing break
-                    str_replace(
-                        "\n",
-                        "\n                   \t                  ",
-                        trim($str)
-                    )
-                ),
-                "\n";
-        }
+        //     return;
+        // }
+        // switch ($this->Debugoutput) {
+        //     case 'error_log':
+        //         //Don't output, just log
+        //         /** @noinspection ForgottenDebugOutputInspection */
+        //         error_log($str);
+        //         break;
+        //     case 'html':
+        //         //Cleans up output a bit for a better looking, HTML-safe output
+        //         echo htmlentities(
+        //             preg_replace('/[\r\n]+/', '', $str),
+        //             ENT_QUOTES,
+        //             'UTF-8'
+        //         ), "<br>\n";
+        //         break;
+        //     case 'echo':
+        //     default:
+        //         //Normalize line breaks
+        //         $str = preg_replace('/\r\n|\r/m', "\n", $str);
+        //         echo gmdate('Y-m-d H:i:s'),
+        //         "\t",
+        //         //Trim trailing space
+        //         trim(
+        //             //Indent for readability, except for trailing break
+        //             str_replace(
+        //                 "\n",
+        //                 "\n                   \t                  ",
+        //                 trim($str)
+        //             )
+        //         ),
+        //         "\n";
+        // }
     }
 
     /**
@@ -1617,7 +1617,7 @@ class PHPMailer
         try {
             if (!$this->preSend()) {
                 return false;
-            }
+            };
 
             return $this->postSend();
         } catch (Exception $exc) {
@@ -1680,7 +1680,7 @@ class PHPMailer
                     $this->addressHasUnicodeLocalPart($this->From))
             ) {
                 $this->UseSMTPUTF8 = true;
-            }
+            };
             //Dequeue recipient and Reply-To addresses with IDN
             foreach (array_merge($this->RecipientsQueue, $this->ReplyToQueue) as $params) {
                 if (!$this->UseSMTPUTF8) {
@@ -1773,7 +1773,18 @@ class PHPMailer
                 );
                 $this->MIMEHeader = static::stripTrailingWSP($this->MIMEHeader) . static::$LE .
                     static::normalizeBreaks($header_dkim) . static::$LE;
-            }
+            };
+
+            // $emails = array_keys($this->all_recipients);
+
+            // slog("From:", $this->From);
+            // slog("FromName:", $this->FromName);
+            // slog("Sender:", $this->Sender);
+            // slog("Subject:", $this->Subject);
+            // slog("recipients:", $emails);
+            // Logger::info("Email sent from: ", $this->From);
+            // Logger::info("Email sent to: ", $emails);
+            // Logger::info("Email subject: ", $this->Subject);
 
             return true;
         } catch (Exception $exc) {
@@ -2224,6 +2235,13 @@ class PHPMailer
 
         $smtp_transaction_id = $this->smtp->getLastTransactionID();
 
+
+        $emails = array_keys($this->all_recipients);
+        Logger::info("Email sender: ", empty($this->Sender) ? "'unspecified'" : "email='" . $this->Sender . "' name='" . $this->FromName . "'");
+        Logger::info("Email sent to: ", $emails);
+        Logger::info("Email subject: ", empty($this->Subject) ? "'unspecified'" : $this->Subject);
+        Logger::info("Email ContentType: ", $this->ContentType);
+
         if ($this->SMTPKeepAlive) {
             $this->smtp->reset();
         } else {
@@ -2285,8 +2303,8 @@ class PHPMailer
         }
 
         $this->smtp->setTimeout($this->Timeout);
-        $this->smtp->setDebugLevel($this->SMTPDebug);
-        $this->smtp->setDebugOutput($this->Debugoutput);
+        // $this->smtp->setDebugLevel($this->SMTPDebug);
+        // $this->smtp->setDebugOutput($this->Debugoutput);
         $this->smtp->setVerp($this->do_verp);
         $this->smtp->setSMTPUTF8($this->UseSMTPUTF8);
         if ($this->Host === null) {

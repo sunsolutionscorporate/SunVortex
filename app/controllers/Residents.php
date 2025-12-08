@@ -1,7 +1,7 @@
 <?php
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\Exception;
 
 
 
@@ -55,24 +55,25 @@ class Residents extends Controller
          $mail->Password   = 'uncj ldag hard jzbz';         // password akun SMTP
          $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
          $mail->Port       = 587;
-         $mail->SMTPDebug = 3;
-         $mail->Debugoutput = 'html'; // biar tampilnya rapi
 
 
          // Pengirim
-         // $mail->setFrom('noreply@domainmu.com', 'Nama Pengirim');
-         $mail->setFrom('from@example.com', 'Mailer');
+         $mail->setFrom('sunsolutioncorporate@gmail.com');
 
          // Penerima
          $mail->addAddress('sugengwahyuwidodo9@gmail.com');
 
          $mail->addReplyTo('no-reply@domainmu.com', 'No Reply');
-         $mail->addCC('cc@example.com', 'Kepala Kampung');
 
+
+         // Tembusan (CC)
+         $mail->addCC('kampungcabang6@gmail.com', 'Kepala Kampung');
+         // Tembusan tersembunyi (BCC)
+         $mail->addBCC('bos@example.com', 'Bos');
 
          // Isi
          $mail->isHTML(true);
-         $mail->Subject = 'Judul Email';
+         // $mail->Subject = 'Judul Email';
          $mail->Body    = '<p>Halo, ini email dari PHPMailer!</p>';
 
          // Kirim

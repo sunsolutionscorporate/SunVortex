@@ -19,7 +19,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-namespace PHPMailer\PHPMailer;
+// namespace PHPMailer\PHPMailer;
 
 /**
  * PHPMailer RFC821 SMTP email transport class.
@@ -365,26 +365,21 @@ class SMTP
         }
         if (empty($port)) {
             $port = self::DEFAULT_PORT;
-        }
+        };
+
         //Connect to the SMTP server
-        $this->edebug(
-            "Connection: opening to $host:$port, timeout=$timeout, options=" .
-                (count($options) > 0 ? var_export($options, true) : 'array()'),
-            self::DEBUG_CONNECTION
-        );
 
         $this->smtp_conn = $this->getSMTPConnection($host, $port, $timeout, $options);
 
         if ($this->smtp_conn === false) {
             //Error info already set inside `getSMTPConnection()`
             return false;
-        }
-
-        $this->edebug('Connection: opened', self::DEBUG_CONNECTION);
+        };
 
         //Get any announcement
         $this->last_reply = $this->get_lines();
-        $this->edebug('SERVER -> CLIENT: ' . $this->last_reply, self::DEBUG_SERVER);
+        Logger::debug("SMTP connected to $host:$port", "timeout=$timeout options=", $options);
+
         $responseCode = (int)substr($this->last_reply, 0, 3);
         if ($responseCode === 220) {
             return true;
@@ -396,7 +391,7 @@ class SMTP
             $this->quit();
         }
         //This will handle 421 responses which may not wait for a QUIT (e.g. if the server is being shut down)
-        $this->edebug('Connection: closing due to error', self::DEBUG_CONNECTION);
+        Logger::warning("SMTP Connection: closing due to error $this->last_reply");
         $this->close();
         return false;
     }
@@ -461,11 +456,6 @@ class SMTP
                 '',
                 (string) $errno,
                 $errstr
-            );
-            $this->edebug(
-                'SMTP ERROR: ' . $this->error['error']
-                    . ": $errstr ($errno)",
-                self::DEBUG_CLIENT
             );
 
             return false;
@@ -557,15 +547,8 @@ class SMTP
                 return false;
             }
 
-            $this->edebug('Auth method requested: ' . ($authtype ?: 'UNSPECIFIED'), self::DEBUG_LOWLEVEL);
-            $this->edebug(
-                'Auth methods available on the server: ' . implode(',', $this->server_caps['AUTH']),
-                self::DEBUG_LOWLEVEL
-            );
-
             //If we have requested a specific auth type, check the server supports it before trying others
             if (null !== $authtype && !in_array($authtype, $this->server_caps['AUTH'], true)) {
-                $this->edebug('Requested auth method not available: ' . $authtype, self::DEBUG_LOWLEVEL);
                 $authtype = null;
             }
 
@@ -579,16 +562,13 @@ class SMTP
                     }
                 }
                 if (empty($authtype)) {
-                    $this->setError('No supported authentication methods found');
-
+                    Logger::warning("SMPT authentication failed: No supported authentication methods found");
                     return false;
                 }
-                $this->edebug('Auth method selected: ' . $authtype, self::DEBUG_LOWLEVEL);
             }
 
             if (!in_array($authtype, $this->server_caps['AUTH'], true)) {
-                $this->setError("The requested authentication method \"$authtype\" is not supported by the server");
-
+                Logger::warning("SMTP authentication failed: Server does not support authentication type '$authtype'");
                 return false;
             }
         } elseif (empty($authtype)) {
@@ -773,7 +753,7 @@ class SMTP
             //Close the connection and cleanup
             fclose($this->smtp_conn);
             $this->smtp_conn = null; //Makes for cleaner serialization
-            $this->edebug('Connection: closed', self::DEBUG_CONNECTION);
+            Logger::debug("SMTP connection closed");
         }
     }
 
@@ -1132,18 +1112,12 @@ class SMTP
             $detail = substr($this->last_reply, 4);
         }
 
-        $this->edebug('SERVER -> CLIENT: ' . $this->last_reply, self::DEBUG_SERVER);
-
         if (!in_array($code, (array) $expect, true)) {
             $this->setError(
                 "$command command failed",
                 $detail,
                 $code,
                 $code_ex
-            );
-            $this->edebug(
-                'SMTP ERROR: ' . $this->error['error'] . ': ' . $this->last_reply,
-                self::DEBUG_CLIENT
             );
 
             return false;
@@ -1226,16 +1200,6 @@ class SMTP
      */
     public function client_send($data, $command = '')
     {
-        //If SMTP transcripts are left enabled, or debug output is posted online
-        //it can leak credentials, so hide credentials in all but lowest level
-        if (
-            self::DEBUG_LOWLEVEL > $this->do_debug &&
-            in_array($command, ['User & Password', 'Username', 'Password'], true)
-        ) {
-            $this->edebug('CLIENT -> SERVER: [credentials hidden]', self::DEBUG_CLIENT);
-        } else {
-            $this->edebug('CLIENT -> SERVER: ' . $data, self::DEBUG_CLIENT);
-        }
         set_error_handler(function () {
             call_user_func_array([$this, 'errorHandler'], func_get_args());
         });
@@ -1388,7 +1352,6 @@ class SMTP
 
             //Deliberate noise suppression - errors are handled afterwards
             $str = @fgets($this->smtp_conn, self::MAX_REPLY_LENGTH);
-            $this->edebug('SMTP INBOUND: "' . trim($str) . '"', self::DEBUG_LOWLEVEL);
             $data .= $str;
             //If response is only 3 chars (not valid, but RFC5321 S4.2 says it must be handled),
             //or 4th character is a space or a line break char, we are done reading, break the loop.
@@ -1553,10 +1516,10 @@ class SMTP
             $errmsg,
             (string) $errno
         );
-        $this->edebug(
-            "$notice Error #$errno: $errmsg [$errfile line $errline]",
-            self::DEBUG_CONNECTION
-        );
+        // $this->edebug(
+        //     "$notice Error #$errno: $errmsg [$errfile line $errline]",
+        //     self::DEBUG_CONNECTION
+        // );
     }
 
     /**

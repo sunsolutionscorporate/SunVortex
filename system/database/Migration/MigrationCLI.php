@@ -109,35 +109,6 @@ class MigrationCLI
             $cli->status();
             break;
 
-         case 'find':
-            // Find migrations related to a table name
-            if (!$subcommand) {
-               CLI::print("Usage: php sun migrate find <table_name>", CLI::YELLOW);
-               break;
-            };
-            $matches = $cli->manager->findMigrationsByTable($subcommand);
-            if (empty($matches)) {
-               CLI::print("No migrations found for table: {$subcommand}", CLI::CYAN);
-            } else {
-               CLI::print("Migrations matching '{$subcommand}':", CLI::MAGENTA);
-               foreach ($matches as $m) {
-                  CLI::print(" - {$m['name']} => {$m['path']}");
-               };
-            };
-            break;
-
-         case 'sync':
-            // Sync migration files with database tables (mark as executed when table exists)
-            $results = $cli->manager->syncWithDatabase();
-            if (empty($results)) {
-               CLI::print("No migrations to sync.", CLI::CYAN);
-            } else {
-               foreach ($results as $r) {
-                  CLI::print("Marked migration {$r['migration']} as executed.", CLI::GREEN);
-               };
-            };
-            break;
-
          case 'help':
          default:
             $cli->showHelp();
@@ -371,42 +342,42 @@ class MigrationCLI
    private function showHelp(): void
    {
       echo <<<HELP
-            Database Migration CLI
+Database Migration CLI
 
-            Usage:
-               php sun migrate <command> [arguments]
+Usage:
+   php sun migrate <command> [arguments]
 
-            Migration Commands:
-               make:create <name>      Create new migration file
-               make:migration <name>   Alias for make:create
-               run                     Run pending migrations
-               migrate                 Alias for run
-               rollback [steps]        Rollback migrations (default: 1 step)
-               refresh                 Rollback all and run again
-               reset                   Rollback all migrations
-               fresh                   Drop all and re-migrate (requires confirmation)
-               status                  Show migration status
-               list                    List all migrations
+Migration Commands:
+   make:create <name>      Create new migration file
+   make:migration <name>   Alias for make:create
+   run                     Run pending migrations
+   migrate                 Alias for run
+   rollback [steps]        Rollback migrations (default: 1 step)
+   refresh                 Rollback all and run again
+   reset                   Rollback all migrations
+   fresh                   Drop all and re-migrate (requires confirmation)
+   status                  Show migration status
+   list                    List all migrations
 
-            Seeder Commands:
-               make:seed <name>        Create new seeder file
-               seed [name]             Run seeder (run all if no name supplied)
-               seed:all                Run all seeders
-               seed:refresh            Reset migrations and run seeders
+Seeder Commands:
+   make:seed <name>        Create new seeder file
+   seed [name]             Run seeder (run all if no name supplied)
+   seed:all                Run all seeders
+   seed:refresh            Reset migrations and run seeders
 
-            Examples:
-               php sun migrate make:create create_users_table
-               php sun migrate run
-               php sun migrate rollback
-               php sun migrate rollback 3
-               php sun migrate refresh
-               php sun migrate status
+Examples:
+   php sun migrate make:create create_users_table
+   php sun migrate run
+   php sun migrate rollback
+   php sun migrate rollback 3
+   php sun migrate refresh
+   php sun migrate status
 
-               php sun migrate make:seed testing_seeder
-               php sun migrate seed testing_seeder
-               php sun migrate seed:all
+   php sun migrate make:seed testing_seeder
+   php sun migrate seed testing_seeder
+   php sun migrate seed:all
 
-            HELP;
+HELP;
    }
 }
 

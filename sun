@@ -31,20 +31,6 @@ class CLI
          require_once $bootstrap;
          $kernel = new Kernel();
 
-         // Detect if terminal supports ANSI colors. On plain Windows consoles
-         // ANSI escape sequences are often not supported; disable colors
-         // when not available to avoid printing raw escape codes.
-         $enableColors = true;
-         if (stripos(PHP_OS, 'WIN') === 0) {
-            $ansicon = getenv('ANSICON');
-            $conemu = getenv('ConEmuANSI');
-            $term = getenv('TERM');
-            if ($ansicon === false && strtoupper($conemu) !== 'ON' && !$term) {
-               $enableColors = false;
-            };
-         };
-         self::attr('useColors', $enableColors);
-
 
          $args = $_SERVER['argv'] ?? [];
          array_shift($args); // array -> 0
@@ -97,38 +83,23 @@ class CLI
                self::print("::{$src} Testing finished.", self::CYAN);
             }
          } elseif ($cmd == 'migrate') {
-            $sub = $args[0] ?? '';
-            self::print("Running {$cmd} [{$sub}]...\n", self::MAGENTA);
+            self::print("SunVotex CLI [ Run Migration ]\n", self::MAGENTA);
             // 
-            // Prefer core Database Migration folder, fallback to storage migrations
-            $path_migration = realpath(CORE_PATH . 'Database' . DIRECTORY_SEPARATOR . 'Migration' . DIRECTORY_SEPARATOR);
-            if (!$path_migration) {
-               $alt = realpath($root . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations');
-               $path_migration = $alt ?: null;
-            }
-
-            if ($path_migration) {
-               $files = File::scanFiles($path_migration);
-               foreach ($files->toArray() as $key => $value) {
-                  require_once $value['location'];
-               };
-            } else {
-               self::print('Migration folder not found: ' . CORE_PATH . 'Database' . DIRECTORY_SEPARATOR . 'Migration', self::YELLOW);
-            }
+            $path_migration = realpath(CORE_PATH . 'Database' . DIRECTORY_SEPARATOR . 'migration' . DIRECTORY_SEPARATOR);
+            $files = File::scanFiles($path_migration);
+            foreach ($files->toArray() as $key => $value) {
+               require_once $value['location'];
+            };
 
             MigrationCLI::run(...$args);
-            // self::print($cmd, self::RED);
-            // echo print_r($files, true);
-            // 
          } else {
             echo 'HELPER';
          };
 
 
-         self::print("\nfinished {$cmd}", self::MAGENTA);
-         exit(0);
-
-         // $kernel->boot();
+         $cmd = strtoupper($cmd);
+         self::print("SunVotex CLI [ Finished {$cmd} ]\n", self::MAGENTA);
+         exit(1);
       }
       return self::$instance;
    }
@@ -189,12 +160,6 @@ class CLI
          }
       }
       $reset = self::WHITE;
-      $useColors = self::attr('useColors') ?? true;
-      if (!$useColors) {
-         // strip color sequences when colors are disabled
-         $color = '';
-         $reset = '';
-      }
       echo $color . $message . $reset . PHP_EOL;
    }
 };

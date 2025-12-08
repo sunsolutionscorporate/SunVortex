@@ -25,23 +25,22 @@ class Throttle_Ms
    protected $decaySeconds;
    protected $keyPrefix = 'throttle_';
 
-   public function __construct(?int $maxAttempts = null, ?int $decaySeconds = null, $cache = null)
+   public function __construct()
    {
-      $this->cache = $cache ?? new Cache();
-      $this->maxAttempts = $maxAttempts ?? (int) config('RATE_ATT');
-      $this->decaySeconds = $decaySeconds ?? (int) config('RATE_TIME');
+      $this->cache = new Cache();
+      $this->maxAttempts = (int) config('RATE_ATT');
+      $this->decaySeconds = (int) config('RATE_TIME');
    }
 
    /**
     * Attempt an action identified by $identifier for the current client.
     *
     * @param string $identifier  Unique identifier for the action (e.g. route name)
-    * @param mixed  $request     Optional Request object; if null Request::init() will be used
     * @return $this
     */
-   public function attempt(string $identifier, $request = null)
+   public function attempt(string $identifier)
    {
-      $request = $request ?? Request::init();
+      $request = Request::init();
 
       $client = method_exists($request, 'getClientIp') ? $request->getClientIp() : 'anon';
       $key = $this->keyPrefix . $client . '_' . $identifier;
@@ -115,13 +114,15 @@ class Throttle_Ms
          'limiter'     => $limiter,
          'identifier'  => $identifier,
       ];
+
       if (!$allowed) {
-         // Response::headers([
-         //    'X-RateLimit-Limit' => (string) $this->maxAttempts,
-         //    'X-RateLimit-Remaining' => (string) ($this->response['remaining'] ?? 0),
-         //    'X-RateLimit-Reset' => (string) ($this->response['reset_at'] ?? time()),
-         //    'Retry-After' => (string) ($this->response['retry_after'] ?? 0),
-         // ]);
+         $send_response = Response::getInstance();
+         $send_response->headers([
+            'X-RateLimit-Limit' => (string) $this->maxAttempts,
+            'X-RateLimit-Remaining' => (string) ($this->response['remaining'] ?? 0),
+            'X-RateLimit-Reset' => (string) ($this->response['reset_at'] ?? time()),
+            'Retry-After' => (string) ($this->response['retry_after'] ?? 0),
+         ]);
       }
       return $this;
    }
@@ -135,35 +136,14 @@ class Throttle_Ms
    }
 
    /**
-    * Return headers suitable for rate-limit responses
-    *
-    * @return array [header => value]
-    */
-   public function headers(): array
-   {
-      return [
-         'X-RateLimit-Limit' => (string) $this->maxAttempts,
-         'X-RateLimit-Remaining' => (string) ($this->response['remaining'] ?? 0),
-         'X-RateLimit-Reset' => (string) ($this->response['reset_at'] ?? time()),
-         'Retry-After' => (string) ($this->response['retry_after'] ?? 0),
-      ];
-   }
-
-   /**
     * Reset throttle for a given identifier and client (useful for tests)
     */
-   public function reset(string $identifier, $request = null): void
+   public function reset(string $identifier): void
    {
-      $request = $request ?? Request::init();
+      $request = Request::init();
       $client = method_exists($request, 'getClientIp') ? $request->getClientIp() : 'anon';
       $key = $this->keyPrefix . $client . '_' . $identifier;
       $this->cache->delete($key);
-   }
-
-
-   public function getResponse(): array
-   {
-      return $this->response;
    }
 
    public function getRemaining(): int

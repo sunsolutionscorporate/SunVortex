@@ -116,12 +116,12 @@ class Throttle_Ms
          'identifier'  => $identifier,
       ];
       if (!$allowed) {
-         Response::headers([
-            'X-RateLimit-Limit' => (string) $this->maxAttempts,
-            'X-RateLimit-Remaining' => (string) ($this->response['remaining'] ?? 0),
-            'X-RateLimit-Reset' => (string) ($this->response['reset_at'] ?? time()),
-            'Retry-After' => (string) ($this->response['retry_after'] ?? 0),
-         ]);
+         // Response::headers([
+         //    'X-RateLimit-Limit' => (string) $this->maxAttempts,
+         //    'X-RateLimit-Remaining' => (string) ($this->response['remaining'] ?? 0),
+         //    'X-RateLimit-Reset' => (string) ($this->response['reset_at'] ?? time()),
+         //    'Retry-After' => (string) ($this->response['retry_after'] ?? 0),
+         // ]);
       }
       return $this;
    }

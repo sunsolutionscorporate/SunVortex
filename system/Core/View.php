@@ -3,11 +3,13 @@ class View
 {
    protected $path;
    protected $data;
+   protected $return;
 
-   public function __construct(string $path, array $data = [])
+   public function __construct(string $path, array $data = [], bool $return = false)
    {
       $this->path = $path;
       $this->data = $data;
+      $this->return = $return;
    }
 
    public function render(): string
@@ -20,6 +22,11 @@ class View
 
       extract($this->data);
 
+      if ($this->return) {
+         // 
+      } else {
+         // 
+      }
       ob_start();
       include $file;
       return ob_get_clean();

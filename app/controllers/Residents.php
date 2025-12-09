@@ -39,48 +39,12 @@ class Residents extends Controller
 
    public function email()
    {
-      // require 'PHPMailer/src/PHPMailer.php';
-      // require 'PHPMailer/src/SMTP.php';
-      // require 'PHPMailer/src/Exception.php';
-
-
-      $mail = new PHPMailer(true);
-
-      try {
-         // Mode SMTP
-         $mail->isSMTP();
-         $mail->Host       = 'smtp.gmail.com';
-         $mail->SMTPAuth   = true;
-         $mail->Username   = 'sunsolutioncorporate@gmail.com';  // email akun SMTP mu
-         $mail->Password   = 'uncj ldag hard jzbz';         // password akun SMTP
-         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-         $mail->Port       = 587;
-
-
-         // Pengirim
-         $mail->setFrom('sunsolutioncorporate@gmail.com');
-
-         // Penerima
-         $mail->addAddress('sugengwahyuwidodo9@gmail.com');
-
-         $mail->addReplyTo('no-reply@domainmu.com', 'No Reply');
-
-
-         // Tembusan (CC)
-         $mail->addCC('kampungcabang6@gmail.com', 'Kepala Kampung');
-         // Tembusan tersembunyi (BCC)
-         $mail->addBCC('bos@example.com', 'Bos');
-
-         // Isi
-         $mail->isHTML(true);
-         // $mail->Subject = 'Judul Email';
-         $mail->Body    = '<p>Halo, ini email dari PHPMailer!</p>';
-
-         // Kirim
-         $mail->send();
-         echo "Email terkirim!";
-      } catch (Exception $e) {
-         echo "Gagal: {$mail->ErrorInfo}";
-      }
+      (new Email([
+         'content' => view('email_otp', []),
+         'subject' => 'Contoh Subject Email',
+         // 'altBody' => 'Halo, ini email dari PHPMailer!',
+      ]))
+         ->notify('kampungcabang6@gmail.com', 'Kepala Kampung', Email::TYPE_PUBLIC)
+         ->send('sugengwahyuwidodo9@gmail.com');
    }
 }

@@ -638,6 +638,28 @@ if (!function_exists('redirect')) {
    }
 };
 
+if (!function_exists('isHtml')) {
+   /**
+    * Fungsi untuk memeriksa apakah sebuah string mengandung tag HTML atau karakter entitas HTML.
+    * @param string $str String yang akan diperiksa.
+    * @return bool Mengembalikan true jika string mengandung HTML, false jika tidak atau kosong.
+    */
+   function isHtml($str)
+   {
+      // Jika kosong, dianggap bukan HTML
+      if (trim($str) === '') return false;
+      // Cek apakah ada tag HTML
+      if ($str != strip_tags($str)) {
+         return true; // ada tag HTML seperti <b>, <div>, dll
+      }
+      // Cek apakah ada karakter entitas HTML (misal &lt; atau &nbsp;)
+      if (preg_match('/&[a-zA-Z0-9#]+;/', $str)) {
+         return true;
+      }
+      return false; // bukan HTML
+   }
+}
+
 function &get_instance()
 {
    return Controller::get_instance();

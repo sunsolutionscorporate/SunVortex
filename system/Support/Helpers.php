@@ -277,6 +277,7 @@ if (!function_exists('isRegex')) {
       return @preg_match($str, '') !== false;
    }
 };
+
 if (!function_exists('isJson')) {
    function isJson(string $string): bool
    {
@@ -659,6 +660,26 @@ if (!function_exists('isHtml')) {
       return false; // bukan HTML
    }
 }
+
+if (!function_exists('email')) {
+   /**
+    * Fungsi untuk membuat objek Email
+    * Parameter $payload dapat berupa:
+    * - string  → isi email (HTML atau teks biasa)
+    * - array   → [
+    *       'subject' => 'Judul Email',
+    *       'content' => '<h1>Isi Email</h1>',
+    *       'alt'     => 'Isi alternatif'
+    *   ]
+    *
+    * @param string|array $payload Isi email atau konfigurasi email.
+    * @return Email Objek Email
+    */
+   function email($payload): Email
+   {
+      return new Email($payload);
+   }
+};
 
 function &get_instance()
 {

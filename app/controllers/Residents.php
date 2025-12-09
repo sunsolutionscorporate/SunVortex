@@ -39,11 +39,11 @@ class Residents extends Controller
 
    public function email()
    {
-      (new Email([
+      email([
          'content' => view('email_otp', []),
          'subject' => 'Contoh Subject Email',
          // 'altBody' => 'Halo, ini email dari PHPMailer!',
-      ]))
+      ])
          ->notify('kampungcabang6@gmail.com', 'Kepala Kampung', Email::TYPE_PUBLIC)
          ->send('sugengwahyuwidodo9@gmail.com');
    }

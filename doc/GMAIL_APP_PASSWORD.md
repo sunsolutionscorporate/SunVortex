@@ -117,7 +117,7 @@ Aplikasi yang menggunakan password tersebut tidak akan bisa login lagi.
 
 App Password adalah cara yang aman dan terkontrol untuk memberikan akses SMTP kepada aplikasi pihak ketiga tanpa mengekspos password utama Gmail Anda. Dengan App Password, koneksi mailer Anda menjadi lebih stabil, aman, dan sesuai standar Google.
 
-Jika Anda menggunakan framework **SunVortex**, cukup letakkan App Password Anda di bagian `.env` seperti:
+letakkan App Password Anda di bagian `.env` seperti:
 
 ```
 SMTP_PASSWORD=abcd efgh ijkl mnop

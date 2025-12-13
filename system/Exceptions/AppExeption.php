@@ -238,7 +238,6 @@ class IOLog
    }
 };
 
-
 /**
  * Logger
  * 
@@ -262,6 +261,8 @@ class IOLog
  *       userFriendly: false  // jangan expose di UI, hanya di log
  *   );
  */
+
+
 class Logger extends Exception
 {
    protected $errorType = '__ERROR__';

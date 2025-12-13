@@ -117,9 +117,9 @@ class Autoload
 }
 
 
+Autoload::from(__DIR__ . '/Exceptions');
 Autoload::from(__DIR__ . '/Support');
 Autoload::from(__DIR__ . '/Interfaces');
-Autoload::from(__DIR__ . '/Exceptions');
 Autoload::from(__DIR__ . '/Cache');
 Autoload::from(__DIR__ . '/Core');
 Autoload::from(__DIR__ . '/Http');

@@ -118,10 +118,13 @@ class Residents_model extends BaseModel
       $output = [];
       foreach ($residentModels as $r) {
          $entry = $r->toArray();
-         $entry['marital'] = $entry['marital']['name'];
-         $entry['job'] = $entry['job']['name'];
+         $entry['marital'] = $entry['marital']['name'] ?? '';
+         $entry['job'] = $entry['job']['name'] ?? '';
          $output[] = $entry;
       }
+
+      // slog($output);
+      // exit;
 
       return $this->results($output)
          ->setLimit($limit)

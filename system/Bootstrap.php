@@ -16,7 +16,6 @@ define("DEBUG", '__DEBUG__');
 class Kernel
 {
    private $request;
-   private $middlewares = array();
    private $middleware_handle = null;
    // Cache untuk reflection metadata agar tidak merefleksi ulang setiap request
    private static $reflectionCache = [];
@@ -339,7 +338,7 @@ class Kernel
       if (Request::init()->isCli()) {
          $this->cli_command();
          return;
-      }
+      };
 
       // Execute pipeline - final callback adalah routing ke controller
       $response = $pipeline->then(function ($request) {

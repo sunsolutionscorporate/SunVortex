@@ -4,6 +4,6 @@
 // $app = new Kernel();
 // $app->run();
 
-require_once '../system/index.php';
+// require_once '../system/index.php';
 
-// echo "WOKE";
+echo "WOKE";

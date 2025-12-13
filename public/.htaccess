@@ -1,6 +1,8 @@
-Options -Indexes -MultiViews
+Options -MultiViews
+Options -Indexes
 
 <IfModule mod_rewrite.c>
+    Options +FollowSymlinks
     RewriteEngine On
 
     # Forward Authorization header (AMAN)

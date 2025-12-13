@@ -24,7 +24,6 @@ class Response
 {
    private static $instance = null;
    private static $mimeTypes = null; // Lazy load MIME types
-
    private $headers = [];
    private $cookies = [];
    private $content; // Any type - string, object, array

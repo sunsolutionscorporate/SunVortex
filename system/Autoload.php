@@ -1,40 +1,4 @@
 <?php
-
-// class Autoload
-// {
-//    public static function from(string $directory, bool $recursive = true): void
-//    {
-//       if (!is_dir($directory)) return;
-
-//       $iterator = $recursive
-//          ? new \RecursiveIteratorIterator(
-//             new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
-//          )
-//          : new \FilesystemIterator($directory, \FilesystemIterator::SKIP_DOTS);
-
-//       /** @var \SplFileInfo $file */
-//       foreach ($iterator as $file) {
-//          $filename = $file->getFilename();
-
-//          // ❌ Abaikan file yang mengandung '.bak'
-//          if (strpos($filename, '.bak') !== false) {
-//             continue;
-//          }
-
-
-//          // Folder lain: load semua file PHP seperti biasa
-//          if ($file->isFile() && $file->getExtension() === 'php') {
-//             require_once $file->getPathname();
-//          }
-//       }
-//    }
-
-//    public static function helpers(string $path = __DIR__ . '/../app/Helpers'): void
-//    {
-//       self::from($path, true);
-//    }
-// }
-
 class Autoload
 {
    /**
@@ -114,12 +78,11 @@ class Autoload
    {
       self::from($path, true);
    }
-}
+};
 
-
-Autoload::from(__DIR__ . '/Exceptions');
 Autoload::from(__DIR__ . '/Support');
 Autoload::from(__DIR__ . '/Interfaces');
+Autoload::from(__DIR__ . '/Exceptions');
 Autoload::from(__DIR__ . '/Cache');
 Autoload::from(__DIR__ . '/Core');
 Autoload::from(__DIR__ . '/Http');

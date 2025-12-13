@@ -21,19 +21,19 @@ if (!function_exists('token_decode')) {
    {
       $decoded = new stdClass();
       if (!is_string($credential)) {
-         Logger::warning('[', __CLASS__, '] ', "Argument passed to method 'token()' is not a valid token: string expected.");
+         Logger::warning("Argument passed to method 'token()' is not a valid token: string expected.");
          $decoded->status = "invalid token";
          return $decoded;
       }
-      Logger::debug('[', __CLASS__, '] ', 'Decoding Authorization token.');
+      Logger::debug('Decoding Authorization token.');
       try {
          $decoded = JWT::decode($credential, new Key(config('SECRET_KEY'), config('ALGORITHM')));
-         Logger::info('[', __CLASS__, '] ', 'Token decode succeeded — payload: ', $decoded->data);
+         Logger::info('Token decode succeeded — payload: ', $decoded->data);
          $decoded->status = 'ok';
          return $decoded;
       } catch (Exception $e) {
          $err_msg = $e->getMessage();
-         Logger::warning('[', __CLASS__, '] ', 'Authentication: ', $e->getMessage());
+         Logger::warning('Authentication: ', $e->getMessage());
          $decoded->status = $err_msg === "Expired token" ? 'expired token' : 'invalid token';
          return $decoded;
       }

@@ -1,6 +1,4 @@
-
 <?php
-
 $root = substr(__DIR__, 0, strripos(__DIR__, DIRECTORY_SEPARATOR . "system") + 1);
 define('undefined', '__undefined__');
 define("ROOT_PATH", $root);
@@ -11,50 +9,11 @@ define("ERROR", '__ERROR__');
 define("WARNING", '__WARNING__');
 define("INFO", '__INFO__');
 define("DEBUG", '__DEBUG__');
-
-
 class Kernel
 {
    private $request;
-   private $middleware_handle = null;
-   // Cache untuk reflection metadata agar tidak merefleksi ulang setiap request
    private static $reflectionCache = [];
    private static $http_codes;
-   public function __construct()
-   {
-      if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-         require_once __DIR__ . '/../vendor/autoload.php';
-      }
-      // Load autoload
-      require_once __DIR__ . '/Autoload.php';
-      self::loadEnv();
-
-      switch (config('MODE')) {
-         case 'development':
-            if (config('APP_LOG')) {
-               ini_set('display_errors', 0);
-            } else {
-               error_reporting(-1);
-               ini_set('display_errors', 1);
-            }
-            break;
-         case 'testing':
-         case 'production':
-            ini_set('display_errors', 0);
-            if (version_compare(PHP_VERSION, '5.3', '>=')) {
-               error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-            } else {
-               error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
-            }
-            break;
-         default:
-            header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-            echo 'The application environment is not set correctly.';
-            exit(1);
-      };
-      IOLog::init();
-      $this->request =  Request::init();
-   }
 
    private static function insertEnv($key, $value)
    {
@@ -197,54 +156,40 @@ class Kernel
       self::insertEnv('LANGUAGE_DICT', json_encode($bahasa));
    }
 
-   private function validateScalarType($value, $expected)
+   public function __construct()
    {
-      switch ($expected) {
-
-         case 'int':
-         case 'integer':
-            return is_numeric($value) ? (int)$value : null;
-
-         case 'float':
-            return is_numeric($value) ? (float)$value : null;
-
-         case 'string':
-            return is_scalar($value) ? (string)$value : null;
-
-         case 'bool':
-            if (is_bool($value)) return $value;
-
-            $map = ['1' => true, '0' => false, 'true' => true, 'false' => false];
-            $lower = strtolower((string)$value);
-            return $map[$lower] ?? null;
-
-         case 'array':
-            return is_array($value) ? $value : null;
+      if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+         require_once __DIR__ . '/../vendor/autoload.php';
       }
+      // Load autoload
+      require_once __DIR__ . '/Autoload.php';
+      self::loadEnv();
 
-      return null;
-   }
-
-   private function cli_command()
-   {
-      $cli = CLI::init();
-
-      if ($cli->get('COMMAND') === 'test') {
-         // $exec = $cli->get('execute');
-
-         // foreach ($exec as $key => $value) {
-         //    require_once $value;
-         //    // echo $key .  $value . "\n";
-         // }
-
-         // echo print_r($exec, true);
-      } elseif ($cli->get('COMMAND') === 'migrate') {
-         // $path_migration = realpath(CORE_PATH . 'Database' . DIRECTORY_SEPARATOR . 'migration' . DIRECTORY_SEPARATOR);
-         // // echo $path_migration;
-         // loadFiles($path_migration, 'php', false);
-
-         // MigrationCLI::run(...$cli->get('execute'));
-      }
+      switch (config('MODE')) {
+         case 'development':
+            if (config('APP_LOG')) {
+               ini_set('display_errors', 0);
+            } else {
+               error_reporting(-1);
+               ini_set('display_errors', 1);
+            }
+            break;
+         case 'testing':
+         case 'production':
+            ini_set('display_errors', 0);
+            if (version_compare(PHP_VERSION, '5.3', '>=')) {
+               error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+            } else {
+               error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+            }
+            break;
+         default:
+            header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+            echo 'The application environment is not set correctly.';
+            exit(1);
+      };
+      IOLog::init();
+      $this->request =  Request::init();
    }
 
    public function boot()
@@ -255,7 +200,6 @@ class Kernel
 
       // Initialize pipeline dengan request
       $pipeline = new Pipeline();
-
       // Set middleware queue dengan default order
       $pipeline->through([
          'cors',      // Handle CORS & preflight
@@ -276,76 +220,27 @@ class Kernel
          } else {
             $pipeline->skip('csrf');
          }
-      }
-
+      };
       // Register event listener untuk track middleware execution
       $pipeline->listener(function ($event) {
          $type = $event['type'];
          $middleware = $event['middleware'];
 
-         // Log semua event
-         // switch ($type) {
-         //    case 'before':
-         //       Logger::debug('[Pipeline]', "Executing middleware: '{$middleware}'");
-         //       break;
 
-         //    case 'after':
-         //       Logger::debug('[Pipeline]', "Middleware '{$middleware}' completed successfully");
-
-         //       // Contoh: stop pipeline SETELAH throttle dijalankan
-         //       // (bukan sebelum, jadi throttle tetap execute)
-         //       if ($middleware === 'throttle') {
-         //          // Middleware throttle sudah selesai, stop middleware berikutnya
-         //          return 'stop';
-         //       }
-         //       break;
-
-         //    case 'skipped':
-         //       Logger::debug('[Pipeline]', "Middleware '{$middleware}' was skipped");
-         //       break;
-
-         //    case 'failed':
-         //       Logger::warning('[Pipeline]', "Middleware '{$middleware}' failed");
-         //       if (isset($event['error'])) {
-         //          Logger::warning('[Pipeline]', "Error: " . $event['error']->getMessage());
-         //       }
-         //       break;
-         // }
-
-         // slog("{$middleware} => {$type}");
          if ($middleware === 'cors' && $type === 'after') {
             // Middleware throttle sudah selesai, stop middleware berikutnya
             if ($this->request->getOrigin() && $this->request->isOptions()) {
                Response::status(204)->send();
                return 'stop';
             }
-         }
-
-
-         // Return value dari listener:
-         // - null atau void: lanjut ke middleware berikutnya (default)
-         // - 'stop': stop pipeline, jangan lanjut ke middleware BERIKUTNYA
-         // - 'continue': sama dengan null (untuk clarity)
-
-         // Contoh: stop pipeline jika auth failed
-         // if ($type === 'failed' && $middleware === 'auth') {
-         //    return 'stop';
-         // }
-
+         };
          return null;  // Default: lanjut
       });
-
-      if (Request::init()->isCli()) {
-         $this->cli_command();
-         return;
-      };
-
+      // 
       // Execute pipeline - final callback adalah routing ke controller
-      $response = $pipeline->then(function ($request) {
+      $response = $pipeline->then(function () {
          return $this->routeToController($this->request);
       });
-
-      // http_response_code(404);
 
       // Pastikan response adalah Response instance
       if (!($response instanceof Response)) {
@@ -356,12 +251,14 @@ class Kernel
       return $response->send();
    }
 
+
    /**
     * Route request ke controller yang sesuai
     * Ini adalah destination callback dalam pipeline
     */
    private function routeToController($request)
    {
+
       [$controller, $method, $params] = destructure($request->getUri(), ['controller', 'method', 'params']);
       $end_point = ($request->isApi() ? 'api/' : '') . $controller . '/' . $method . '/' . implode('/', $params);
 
@@ -371,6 +268,7 @@ class Kernel
          $controller_dir .= DIRECTORY_SEPARATOR . 'api';
       }
       $controller_dir .= DIRECTORY_SEPARATOR . $controller . '.php';
+
 
       // Cek akses browser ke API
       // if ($request->type() === 'browser' && $request->isApi()) {
@@ -389,11 +287,11 @@ class Kernel
          );
       }
 
-      require_once $controller_path;
       Logger::info("Dispatching request: '" . $end_point . "'");
       /** @var mixed $Controller - Dynamically loaded at runtime */
       Controller::setAttribute('request', $request);
 
+      require_once $controller_path;
       ///////////////////////////////////////////
       ///// RESOLVE & INVOKE HANDLER ////////////
       ///////////////////////////////////////////
@@ -404,10 +302,9 @@ class Kernel
          abort(404, "Controller method '{$controller}::{$method}()' not found");
       }
 
+
       return $this->invokeControllerMethod($metaData['ref'], $args);
    }
-
-
 
    /**
     * Get or build reflection metadata for controller::method and cache it.
@@ -460,7 +357,7 @@ class Kernel
             //    CRITICAL
             // );
          }
-      }
+      };
 
       return self::$reflectionCache[$refKey] ?? [];
    }
@@ -579,13 +476,41 @@ class Kernel
          $declaringName = $ref->getDeclaringClass();
          $controller = $declaringName->getName();
          $controllerInstance = new $controller();
+
          return $ref->invokeArgs($controllerInstance, $args);
       } catch (\Throwable $e) {
-         // Logger::error('[Kernel] Controller exception: ' . $e->getMessage());
          if (function_exists('config') && config('MODE') === 'development') {
             throw $e;
          }
          abort(500, 'Internal server error');
       }
    }
-}
+
+   private function validateScalarType($value, $expected)
+   {
+      switch ($expected) {
+
+         case 'int':
+         case 'integer':
+            return is_numeric($value) ? (int)$value : null;
+
+         case 'float':
+            return is_numeric($value) ? (float)$value : null;
+
+         case 'string':
+            return is_scalar($value) ? (string)$value : null;
+
+         case 'bool':
+            if (is_bool($value)) return $value;
+
+            $map = ['1' => true, '0' => false, 'true' => true, 'false' => false];
+            $lower = strtolower((string)$value);
+            return $map[$lower] ?? null;
+
+         case 'array':
+            return is_array($value) ? $value : null;
+      }
+
+      return null;
+   }
+};

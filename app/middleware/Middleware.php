@@ -10,24 +10,23 @@ class Middleware extends BaseMw
 {
    public function Cors_handle($context, $next)
    {
-      // slog($this->request);
-
-      // slog('------------- > jalankan => cors');
       $allowedOrigins = [
          'http://localhost:3000',
          'http://localhost:8080',
          'https://yourdomain.com',
+         'https://sunsolutions.local',
+         'http://sunsolutions.local',
          'http://127.0.0.1',
-         // 'http://127.0.0.1:5501',
       ];
       $allowedMethods = 'GET, POST, PUT, DELETE, PATCH, OPTIONS';
       $allowedHeaders = 'Content-Type, Authorization, X-CSRF-TOKEN, X-Requested-With';
-
       $context
          ->origin($allowedOrigins, true)
          ->credential()->allowMethod($allowedMethods)
          ->allowedHeaders($allowedHeaders)
          ->cache(600); // cache preflight selama 10 menit
+
+
       return $next($context);
    }
 
@@ -46,14 +45,23 @@ class Middleware extends BaseMw
 
    public function route_handle($context, $next)
    {
+      $request = $context->request->getUri();
+
       if ($this->request->isBrowser()) {
-         // $context->changeController('home');
+         if (empty($request['controller'])) {
+            $context->changeController('home');
+         }
+         // slog('Controller:', $request['controller']);
+         // slog('Method:', $request['method']);
+         // slog('Params:', $request['params']);
+         // slog('OKE');
       };
       return $next($context);
    }
 
    public function auth_handle($context, $next)
    {
+      $uri = $this->request->getUri();
       // $token = token_encode([
       //    'name' => 'widodo'
       // ]);
@@ -81,6 +89,25 @@ class Middleware extends BaseMw
       // } elseif ($this->request->isBrowser()) {
       //    // 
       // }
+
+      if ($this->request->isAjax() || $this->request->isApi()) {
+         Response::json(null)
+            ->status(401, 'gembel')
+            ->meta('dancok', base_url('auth/index'))
+            ->send();
+      };
+      if ($this->request->isBrowser()) {
+         // slog('OKE', $this->request->getCookie('Authorization'));
+
+         $token = $this->request->getCookie('Authorization') ?? '';
+      };
+
+
+      // $decode = $context->decode($token);
+      // if ($decode->status !== 'ok' && $uri['controller'] !== 'auth') {
+      //    return redirect('auth/index');
+      // }
+
 
       return $next($context);
    }
@@ -112,10 +139,7 @@ class Middleware extends BaseMw
 
    public function file_handle($context, $next)
    {
-      slog('------------- > jalankan => file');
+      // slog('------------- > jalankan => file');
       return $next($context);
    }
-}
-
-
-// http://localhost/sun/DefaultApp/index/1/2/3
+};

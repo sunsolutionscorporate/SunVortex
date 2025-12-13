@@ -1,4 +1,3 @@
-
 <?php
 
 // Load cache configuration

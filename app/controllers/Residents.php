@@ -1,10 +1,5 @@
 <?php
 
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\Exception;
-
-
-
 class Residents extends Controller
 {
 
@@ -47,4 +42,12 @@ class Residents extends Controller
          ->notify('kampungcabang6@gmail.com', 'Kepala Kampung', Email::TYPE_PUBLIC)
          ->send('sugengwahyuwidodo9@gmail.com');
    }
-}
+
+   public function whatsapp()
+   {
+      $wa = new WhatsApp('890719127460004', 'EAALQZAP9p9xMBQOGeEoD4vsI0p53rYYgM5PujFKHo8fXNt8AnwAG5a8iX65b2hMgow52N1x1ajKOlDg4JIGyVIDK0kGmHuWti5mQRcKvl0xB5ZB5CqkdH5fEs3oUakPRRlaz8ZBiUNq6oWvsDm2SWsi3T9JPmIOWUNZA3XgPkd4ycE6s20OUjc40Oiqis7xjL1wzypvMAuFo2GpEk8ZAqUDGZB0dQYYhMgkNwKWsaSPpdvv4Fa1G6H8m09olXMNMjYvgvH3V1R1pBnTd9ZABFQ1iEi7X3DVvYVQK4FL6AAUjAZDZD');
+
+      $response = $wa->sendText('6282279905665', "Halo sayang ini pesan dari suamimu *Sugeng Wahyu Widodo*");
+      print_r($response);
+   }
+};

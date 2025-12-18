@@ -19,6 +19,7 @@
    <script src="http://localhost:8080/assets/dist/sunquery.js"></script>
    <script src="assets/chart.js"></script>
    <script src="http://localhost:8080/assets/dist/main.js"></script>
+   <script src="https://accounts.google.com/gsi/client"></script>
 </head>
 
 <body>

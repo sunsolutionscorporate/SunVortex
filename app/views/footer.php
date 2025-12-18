@@ -141,9 +141,4 @@
          data: dataAparatur,
          options: chartOptions,
       });
-
-
-      function googleAuth(res) {
-         console.log('GOOGLE:', res)
-      }
    </script>

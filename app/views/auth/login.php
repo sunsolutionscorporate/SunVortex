@@ -1,4 +1,4 @@
-<div class="login">
+<div class="login" id="wasu">
    <section>
       <div class="head">
          <h1>Sign in</h1>
@@ -29,24 +29,9 @@
                <button type="button" class="btn btn-primary">Sign In</button>
                <span class="sparator">or</span>
 
-               <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-               <div class="login-google">
-                  <div
-                     id="g_id_onload"
-                     data-client_id="598543379687-1o9bsasf8sialvhb0j8llndbhjgbgl6u.apps.googleusercontent.com"
-                     data-auto_prompt="false" data-callback="googleAuth"></div>
+               <button type="button" class="btn" id="googleLogin"><i class="ph ph-google-logo"></i>Continuee with Google</button>
 
-                  <div
-                     class="g_id_signin"
-                     data-type="standard"
-                     data-size="large"
-                     data-theme="outline"
-                     data-text="continue_with"
-                     data-shape="pill"
-                     data-logo_alignment="center"></div>
-               </div>
-            </div>
          </form>
       </div>
    </section>

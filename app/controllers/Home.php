@@ -13,7 +13,7 @@ class Home extends Controller
       $html .= view('main');
       $html .= view('footer');
 
-      // return $html;
+      return $html;
    }
    public function dashboard()
    {

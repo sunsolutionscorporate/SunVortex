@@ -61,7 +61,6 @@ class Middleware extends BaseMw
 
    public function auth_handle($context, $next)
    {
-      slog('ASU');
       $uri = $this->request->getUri();
       // $token = token_encode([
       //    'name' => 'widodo'

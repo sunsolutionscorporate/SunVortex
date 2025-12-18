@@ -205,8 +205,8 @@ class Kernel
          'cors',      // Handle CORS & preflight
          'pageCache', // Page caching
          'throttle',  // Rate limiting
-         'auth',      // Authentication
          'route',     // Route matching
+         'auth',      // Authentication
          'csrf',      // CSRF token validation
       ]);
 

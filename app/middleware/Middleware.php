@@ -61,6 +61,7 @@ class Middleware extends BaseMw
 
    public function auth_handle($context, $next)
    {
+      slog('ASU');
       $uri = $this->request->getUri();
       // $token = token_encode([
       //    'name' => 'widodo'
@@ -90,14 +91,25 @@ class Middleware extends BaseMw
       //    // 
       // }
 
+      $uri = Request::init()->getUri();
+      // slog($uri);
       if ($this->request->isAjax() || $this->request->isApi()) {
-         Response::json(null)
-            ->status(401, 'gembel')
-            ->meta('dancok', base_url('auth/index'))
-            ->send();
+         if ($uri['controller'] !== 'auth') {
+
+            Response::json($uri)
+               ->status(401, 'gembel')
+               ->links('login', 'gembel')
+               ->links('home', 'gembel')
+               ->send();
+         }
       };
       if ($this->request->isBrowser()) {
          // slog('OKE', $this->request->getCookie('Authorization'));
+         if (($uri['controller'] !== 'home') &&
+            ($uri['controller'] !== 'auth')
+         ) {
+            // slog('aaa');
+         }
 
          $token = $this->request->getCookie('Authorization') ?? '';
       };

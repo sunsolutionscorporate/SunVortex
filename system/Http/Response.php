@@ -29,6 +29,7 @@ class Response
    private $content; // Any type - string, object, array
    private $info = [];
    private $meta = [];
+   private $links = [];
    private $errors = [];
    private $httpCode = 200;
    private $responseType = 'html';
@@ -639,6 +640,10 @@ class Response
          if (self::isJson($content)) {
             return self::json(json_decode($content, true));
          }
+         $request = Request::init();
+         if ($request->isBrowser()) {
+            return self::html($content);
+         };
          return self::plain($content);
       }
 
@@ -717,6 +722,25 @@ class Response
          $this->meta = array_merge($this->meta, $key);
       } elseif (is_string($key)) {
          $this->meta[$key] = $value;
+      }
+      return $this;
+   }
+
+
+   /**
+    * Set links data
+    * @example $response->links(['title' => 'My Title',
+    *                           'description' => 'My Description']);
+    * @example $response->links('title', 'My Title');
+    * @example $response->links('description', 'My Description');
+    * @example $response->links('description', 'My Description');
+    */
+   public function links($key, $value = null)
+   {
+      if (is_array($key)) {
+         $this->links = array_merge($this->links, $key);
+      } elseif (is_string($key)) {
+         $this->links[$key] = $value;
       }
       return $this;
    }
@@ -892,10 +916,12 @@ class Response
             break;
          case 'json':
             $output = [
+               'code' => $this->info['code'] ?? 200,
                'status' => $this->info['status'] ?? 'success',
                'message' => $this->info['message'] ?? '',
                'data' => $this->content,
                'meta' => $this->meta,
+               'links' => $this->links,
             ];
 
             // Tambahin errors jika ada

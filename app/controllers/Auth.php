@@ -19,17 +19,13 @@ class Auth extends Controller
       if (!isset($_GET['code'])) {
          die('Kode OAuth tidak ditemukan.');
       };
-
       $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
       if (isset($token['error'])) {
          die('Google OAuth error: ' . $token['error_description']);
       }
       $this->client->setAccessToken($token['access_token']);
-
       $oauth = new Google_Service_Oauth2($this->client);
       $userInfo = $oauth->userinfo->get();
-
-      // 
       // Buat JWT
       $payload = [
          'sub' => $userInfo->id,
@@ -40,29 +36,17 @@ class Auth extends Controller
       ];
 
       $jwt = JWT::encode($payload, config('SECRET_KEY'), config('ALGORITHM'));
-      // Simpan di cookie
-      // setcookie('Authorization', $jwt, time() + config('TOKEN_EXP', 86400), '/', '', true, true);
 
-      slog('AKUN:', $payload);
+      // BALIK KE SPA
+      header("Location: http://localhost/#/oauth#token=$jwt");
+      exit;
    }
    public function index()
    {
-      // slog('ID:', config('GOOGLE_CLIENT_ID'));
-      // slog('SECRET:', config('GOOGLE_CLIENT_SECRET'));
       return view('auth/login');
-
-
-      // $loginUrl = $this->client->createAuthUrl();
-      // header("Location: $loginUrl");
-      // exit;
    }
    public function login_google()
    {
-      // slog('ID:', config('GOOGLE_CLIENT_ID'));
-      // slog('SECRET:', config('GOOGLE_CLIENT_SECRET'));
-      // return view('auth/login');
-
-
       $loginUrl = $this->client->createAuthUrl();
       header("Location: $loginUrl");
       exit;

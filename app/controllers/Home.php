@@ -9,6 +9,15 @@ class Home extends Controller
 
    public function index()
    {
-      slog(__METHOD__);
+      $html = view('header');
+      $html .= view('main');
+      $html .= view('footer');
+
+      // return $html;
+   }
+   public function dashboard()
+   {
+      $outp = view('dashboard');
+      return $outp;
    }
 }

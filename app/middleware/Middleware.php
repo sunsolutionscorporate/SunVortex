@@ -95,11 +95,11 @@ class Middleware extends BaseMw
       if ($this->request->isAjax() || $this->request->isApi()) {
          if ($uri['controller'] !== 'auth') {
 
-            Response::json($uri)
-               ->status(401, 'gembel')
-               ->links('login', 'gembel')
-               ->links('home', 'gembel')
-               ->send();
+            // Response::json($uri)
+            //    ->status(401, 'gembel')
+            //    ->links('login', 'gembel')
+            //    ->links('home', 'gembel')
+            //    ->send();
          }
       };
       if ($this->request->isBrowser()) {

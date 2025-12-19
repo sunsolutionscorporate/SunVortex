@@ -1,4 +1,4 @@
-<div class="login" id="wasu">
+<div class="login frm-sign" id="wasu">
    <section>
       <div class="head">
          <h1>Sign in</h1>

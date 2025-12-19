@@ -731,7 +731,7 @@ abstract class BaseModel
     * Fungsi internal: meng-update record yang sudah ada. Hanya mengirim atribut yang berubah.
     * Return: boolean (apakah ada row yang diubah)
     */
-   protected function update()
+   protected function update($cok = null)
    {
       $data = $this->getChangedAttributes();
       if (empty($data)) return true;

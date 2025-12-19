@@ -1,4 +1,4 @@
-<div class="login" id="wasu">
+<div class="login frm-otp" id="wasu">
    <section>
       <div class="head">
          <h1>OTP Verify</h1>
@@ -14,13 +14,8 @@
                <input type="text" maxlength="1" />
                <input type="text" maxlength="1" />
             </div>
-            <input type="text" value="<?= $name; ?>">
-            <input type="text" value="<?= $email; ?>">
-            <input type="text" value="<?= $uid; ?>">
-            <input type="text" value="<?= $avatar; ?>">
-            <input type="text" value="<?= $givenName; ?>">
-            <input type="text" value="<?= $familyName; ?>">
-            <input type="text" value="<?= $token; ?>">
+
+            <input id="otp_email" type="text" value="<?= $email; ?>">
 
             <div class="login-action">
                <button class="btn btn-primary">Verify</button>

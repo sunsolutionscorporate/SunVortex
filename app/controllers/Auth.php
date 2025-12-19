@@ -45,7 +45,7 @@ class Auth extends Controller
     * @param string $token Token hasil generate_otp_token()
     * @return array ['valid' => bool, 'message' => string]
     */
-   function verify_otp(string $otp_input, string $token): array
+   private function verify_otp(string $otp_input, string $token): array
    {
       $decoded = base64_decode($token);
       if ($decoded === false || strlen($decoded) <= 16) {
@@ -78,6 +78,19 @@ class Auth extends Controller
       return ['valid' => true, 'message' => 'Verifikasi berhasil', 'code' => 200];
    }
 
+   private function sendJwt($name, $email)
+   {
+      // Buat JWT
+      $payload = [
+         'name' => $name,
+         'email' => $email,
+         'iat' => time(),
+         'exp' => time() + config('TOKEN_EXP', 86400),
+      ];
+
+      return JWT::encode($payload, config('SECRET_KEY'), config('ALGORITHM'));
+   }
+
    // private $client;
    public function __construct()
    {
@@ -94,10 +107,13 @@ class Auth extends Controller
    public function google()
    {
       $accessToken = $this->request->post('access_token');
+      if (empty($accessToken)) {
+         return view('auth/verify');
+      }
 
       $googlClient = new Google_Client();
       $googlClient->setClientId(config('GOOGLE_CLIENT_ID'));
-      // $googlClient->setClientSecret(config('GOOGLE_CLIENT_SECRET'));
+      $googlClient->setClientSecret(config('GOOGLE_CLIENT_SECRET'));
       $googlClient->setAccessToken($accessToken);
       $oauth = new Google_Service_Oauth2($googlClient);
       $userInfo = $oauth->userinfo->get();
@@ -105,30 +121,43 @@ class Auth extends Controller
       // cek id user di table users database
       $user = $this->user->find($userInfo->id);
       if ($user) {
-         return [];
-      } else {
-         // buat user baru
-         // $this->user->create([
-         //    'name' => $userInfo->name,
-         //    'email' => $userInfo->email,
-         //    'uid' => $userInfo->id,
-         //    'avatar' => $userInfo->picture,
-         //    'givenName' => $userInfo->givenName,
-         //    'familyName' => $userInfo->familyName,
-         // ]);
-
-         $otp = $this->generate_otp(6);
+         if ($user['otp_verified']) {
+            // 
+            $jwt = $this->sendJwt($user['name'], $user['email']);
+            return Response::json(['token' => $jwt])->status(200, 'You have successfully logged in.');
+         };
+         $otp = $this->generate_otp(6, 1800);
          $payload = [
+            'id' => $userInfo->id,
             'name' => $userInfo->name,
             'email' => $userInfo->email,
-            'uid' => $userInfo->id,
             'avatar' => $userInfo->picture,
             'givenName' => $userInfo->givenName,
             'familyName' => $userInfo->familyName,
-            'otp' => $otp['otp'],
-            'token' => $otp['token'],
-            'expires' => $otp['expires']
+            'otp_token' => $otp['token'],
+            'otp_code' => $otp['otp'],
          ];
+         $this->user->update($payload);
+         email([
+            'content' => view('auth/otp', $payload),
+            'subject' => 'OTP Email - CBNLink',
+            // 'altBody' => 'Halo, ini email dari PHPMailer!',
+         ])
+            ->notify('kampungcabang6@gmail.com', 'Kepala Kampung', Email::TYPE_PUBLIC)
+            ->send($userInfo->email);
+      } else {
+         $otp = $this->generate_otp(6, 1800);
+         $payload = [
+            'id' => $userInfo->id,
+            'name' => $userInfo->name,
+            'email' => $userInfo->email,
+            'avatar' => $userInfo->picture,
+            'givenName' => $userInfo->givenName,
+            'familyName' => $userInfo->familyName,
+            'otp_token' => $otp['token'],
+            'otp_code' => $otp['otp'],
+         ];
+         $this->user->insert($payload);
 
          email([
             'content' => view('auth/otp', $payload),
@@ -137,26 +166,28 @@ class Auth extends Controller
          ])
             ->notify('kampungcabang6@gmail.com', 'Kepala Kampung', Email::TYPE_PUBLIC)
             ->send($userInfo->email);
-         return view('auth/verify', $payload);
       }
-
-      // // Buat JWT
-      // $payload = [
-      //    'name' => $userInfo->name,
-      //    'email' => $userInfo->email,
-      //    'iat' => time(),
-      //    'exp' => time() + config('TOKEN_EXP', 86400),
-      // ];
-
-      // $jwt = JWT::encode($payload, config('SECRET_KEY'), config('ALGORITHM'));
-      return $userInfo;
+      return view('auth/verify', $payload);
    }
 
    public function verify()
    {
-      $otp = $this->verify_otp($this->request->post('otp'), $this->request->post('token'));
-
-      return $otp;
+      $data = $this->user->find([
+         'email' => $this->request->post('email'),
+         'otp_code' => $this->request->post('otp'),
+      ]);
+      if ($data['otp_verified']) {
+         return Response::json(null)->status(422, 'This OTP has already been used');
+      }
+      $otp = $this->verify_otp($data['otp_code'], $data['otp_token']);
+      if ($otp['valid']) {
+         $this->user->update([
+            'otp_verified' => true
+         ]);
+         return Response::json($data)->status($otp['code'], $otp['message']);
+      } else {
+         return Response::status($otp['code'], $otp['message']);
+      }
    }
 
    public function index()
@@ -165,8 +196,8 @@ class Auth extends Controller
    }
    public function jajal()
    {
-      $outp = $this->user->find(1);
-
-      slog($outp);
+      return [
+         'status' => 'ok'
+      ];
    }
 }

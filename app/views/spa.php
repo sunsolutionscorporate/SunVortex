@@ -29,6 +29,12 @@
       </div>
       <div class="nav-button flex gap-20">
          <button class="btn-icon"><i class="ph ph-sun"></i></button>
-         <button class="btn btn-primary">Sign</button>
+         <button class="anjeng">OTP</button>
+         <button class="btn btn-primary act-login">Sign</button>
       </div>
    </header>
+   <main></main>
+   <footer>
+      <p>&copy; 2025 PT.SUN Solutions Corp. All rights reserved.</p>
+   </footer>
+</body>

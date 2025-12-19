@@ -48,12 +48,46 @@ class User_model extends BaseModel
       parent::__construct($attributes, $db);
    }
 
-   public function find($id)
+   public function find($field)
    {
-      return $this->db->table('users')
-         ->where('id', $id)
-         ->first();
+      $user = $this->db->table('users');
+      if (is_array($field)) {
+         foreach ($field as $k => $v) {
+            $user->where($k, $v);
+         }
+         $row = $user->first();
+      } else {
+         $row = $user->where('id', $field)
+            ->first();
+      };
+
+      return $row;
    }
+   public function insert($data)
+   {
+      try {
+         $id = $this->db->table('users')->insert($data);
+         if ($id === false || $id === null) return false;
+         return $id ?? true;
+      } catch (Exception $e) {
+         Logger::warning($e->getMessage());
+         return false;
+      };
+   }
+
+   public function update($data = [])
+   {
+      try {
+         $id = $this->db->table('users')
+            ->where('id', $data['id'])
+            ->update($data);
+         return $id !== false;
+      } catch (Exception $e) {
+         Logger::warning($e->getMessage());
+         return false;
+      };
+   }
+
    public function create($data)
    {
       $user = $this->find($data['id']);

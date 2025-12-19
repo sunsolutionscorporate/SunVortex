@@ -3,12 +3,12 @@
 use LDAP\Result;
 
 /**
- * BaseModelXX - Class Induk untuk semua Model
+ * BaseModel_XXX - Class Induk untuk semua Model
  * 
  * @author SunVortex Framework
  * @version 1.0
  */
-abstract class BaseModelXX
+abstract class BaseModel_XXX
 {
    public $profiler;
    protected $db;
@@ -421,7 +421,7 @@ abstract class BaseModelXX
          }
 
          // Single Model instance
-         if ($value instanceof BaseModelXX) {
+         if ($value instanceof BaseModel_XXX) {
             $array[$key] = $value->toArray();
             continue;
          }
@@ -430,7 +430,7 @@ abstract class BaseModelXX
          if (is_array($value)) {
             $arr = [];
             foreach ($value as $item) {
-               if ($item instanceof BaseModelXX) {
+               if ($item instanceof BaseModel_XXX) {
                   $arr[] = $item->toArray();
                } elseif (is_object($item) && method_exists($item, 'toArray')) {
                   $arr[] = $item->toArray();
@@ -526,7 +526,7 @@ abstract class BaseModelXX
 
    /**
     * findBy - cari satu record berdasarkan kolom tertentu
-    * @return BaseModelXX|null
+    * @return BaseModel_XXX|null
     */
    public function findBy($field, $value)
    {
@@ -705,7 +705,7 @@ abstract class BaseModelXX
     * Behavior: menambahkan timestamps bila diaktifkan, menyimpan primary key hasil insert ke attributes.
     * Return: insert id
     */
-   private function insertNew()
+   protected function insertNew()
    {
       $data = $this->attributes;
       if ($this->timestamps) {
@@ -755,15 +755,50 @@ abstract class BaseModelXX
 
    /**
     * Create baru record dari static method
+    * Jika $forceInsert = true, selalu insert baru meskipun primary key ada.
+    * Jika false (default), gunakan logika upsert (insert jika belum ada, update jika sudah ada).
     */
-   /**
-    * Backward-compatible instance create (tetap ada untuk kompatibilitas)
-    */
-   public function create($data)
+   public function create($data, $forceInsert = false)
    {
       $model = new static($data);
+      if ($forceInsert) {
+         return $model->insertNew();
+      }
       $model->save();
       return $model;
+   }
+
+   /**
+    * Insert baru record secara eksplisit (selalu insert, abaikan primary key jika ada).
+    * Berguna untuk tabel dengan primary key manual atau non-auto-increment.
+    */
+   public function insert($data)
+   {
+      $model = new static($data);
+      $id = $model->insertNew();
+      if ($id !== false) {
+         $model->syncOriginal();
+         return $model;
+      }
+      return false;
+   }
+
+   /**
+    * Update record secara eksplisit berdasarkan primary key yang ada di $data.
+    * Jika primary key tidak ada, throw exception.
+    */
+   public function updateRecord($data)
+   {
+      if (!isset($data[$this->primaryKey])) {
+         throw new Exception("Primary key '{$this->primaryKey}' is required for update operation.");
+      }
+      $model = $this->find($data[$this->primaryKey]);
+      if (!$model) {
+         throw new Exception("Record with primary key '{$data[$this->primaryKey]}' not found for update.");
+      }
+      $model->fill($data);
+      $result = $model->save();
+      return $result !== false ? $model : false;
    }
 
    /**

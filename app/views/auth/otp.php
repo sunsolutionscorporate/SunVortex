@@ -54,7 +54,7 @@
                 letter-spacing: 10px;
                 color: #005085;
               ">
-            <?= $otp; ?>
+            <?= $otp_code; ?>
           </div>
         </td>
       </tr>

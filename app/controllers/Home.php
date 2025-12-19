@@ -10,29 +10,21 @@ class Home extends Controller
 
    public function index()
    {
-      $html = view('header');
-      $html .= view('main');
-      $html .= view('footer');
-
-      return $html;
+      return view('spa');
    }
    public function tes_verify()
    {
-      $payload = [
-         'name' => 'sugeng wahyu widodod',
-         'email' => 'sugengwahyuwidodo9@gmail.com',
-         'id' => '107203577704318296848',
-         'avatar' => 'https://lh3.googleusercontent.com/a/ACg8ocJW02KeuCR3zmPRm6w0uKGEha9I2Wl-yDP3H45hgDkeFJ_9zuwo=s96-c',
-         'givenName' => 'sugeng',
-         'familyName' => 'wahyu widodo',
-      ];
-
-      slog('CREATE:', $this->user->create($payload));
+      return view('auth/verify');
    }
    public function xxx()
    {
 
       slog('CREATE:', $this->user->find('107203577704318296848'));
+   }
+   public function web()
+   {
+      $outp = view('web');
+      return $outp;
    }
    public function dashboard()
    {

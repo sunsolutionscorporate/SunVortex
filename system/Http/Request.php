@@ -98,19 +98,23 @@ class Request
          $explode = explode('/', $path);
          $seg_0 = array_shift($explode); // array -> 0
          if ($seg_0 === 'api') {
-            $seg_1 = array_shift($explode); // array -> 1
-            $seg_2 = array_shift($explode); // array -> 2
-            $api_version = isVersionString($seg_1 ?? "");
-            $seg_3 = "";
-            if ($api_version) {
-               $seg_3 =  array_shift($explode); // array -> 3
-            };
-            $api_ctrl = $api_version ? $seg_2 : $seg_1;
-            $api_mtd = $api_version ? ($api_ctrl ? $seg_3 : $seg_2) : $seg_2;
-            $api_version = $api_version ? $seg_1 : 'v0';
-            $path_src = versioning($api_version);
-            self::attr('SOURCE', $path_src);
-            self::attr('API', $api_version);
+            $api_ctrl = array_shift($explode); // array -> 1
+            $api_mtd = array_shift($explode); // array -> 2
+            // $api_version = isVersionString($seg_1 ?? "");
+            // $seg_3 = "";
+            // if ($api_version) {
+            //    $seg_3 =  array_shift($explode); // array -> 3
+            // };
+            // $api_ctrl = $api_version ? $seg_2 : $seg_1;
+            // $api_mtd = $api_version ? ($api_ctrl ? $seg_3 : $seg_2) : $seg_2;
+            // $api_version = $api_version ? $seg_1 : 'v0';
+            // $path_src = versioning($api_version);
+            // self::attr('SOURCE', $path_src);
+
+            $appVersion = function_exists('config') ? config('APP_VERSION') : 'v0';
+            self::attr('source', versioning($appVersion));
+            // self::attr('API', $api_version);
+            self::attr('API', true);
             self::$instance->elementUri = array(
                'controller' => $api_ctrl,
                'method' => $api_mtd ?? 'index',

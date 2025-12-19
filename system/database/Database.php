@@ -216,7 +216,11 @@ class Database
 
          return $connection;
       } catch (PDOException $e) {
+         $host = isset($config['host']) ? $config['host'] : 'localhost';
+         $dbName = isset($config['database']) ? $config['database'] : '(unnamed)';
+         $user = isset($config['username']) ? $config['username'] : '(root)';
          throw new DBException('DB connect failed [group=' . $group . '] message: ' . $e->getMessage());
+         // throw new DBException("DB connect failed [group={$group}]  driver={$driver} host={$host} db={$dbName} user={$user}");
       }
    }
 

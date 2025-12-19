@@ -31,7 +31,6 @@ class MigrationCLI
    {
       $cli = new self();
       // echo print_r($arg, true);
-      // exit;
 
       $command = $arg[0] ?? 'help';
       $subcommand = $arg[1] ?? null;

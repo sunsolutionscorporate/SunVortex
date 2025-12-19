@@ -30,6 +30,9 @@ class CLI
 
          require_once $bootstrap;
          $kernel = new Kernel();
+         // self::print("WADIDAU\n", self::MAGENTA);
+         // $db = Database::init();
+         // exit;
 
 
          $args = $_SERVER['argv'] ?? [];

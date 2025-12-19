@@ -65,8 +65,8 @@ class Residents_model extends BaseModel
       $model->setRelation('marital', $mapMarital[$fk_marital] ?? null);
 
       $output = $model->toArray();
-      $output['job'] = $output['job']['name'];
-      $output['marital'] = $output['marital']['name'];
+      // $output['job'] = $output['job']['name'];
+      // $output['marital'] = $output['marital']['name'];
 
       return $this->results($output);
    }

@@ -30,7 +30,10 @@
                <span class="sparator">or</span>
 
 
-               <button type="button" class="btn" id="googleLogin"><i class="ph ph-google-logo"></i>Continuee with Google</button>
+               <button type="button" class="btn btn-google" id="googleLogin">
+                  <img src="/assets/images/google.svg" alt="Google">
+                  <span>Continue with Google</span>
+               </button>
 
          </form>
       </div>

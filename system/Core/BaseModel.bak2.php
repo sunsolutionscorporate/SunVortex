@@ -3,12 +3,12 @@
 use LDAP\Result;
 
 /**
- * BaseModel - Class Induk untuk semua Model
+ * BaseModelXX - Class Induk untuk semua Model
  * 
  * @author SunVortex Framework
  * @version 1.0
  */
-abstract class BaseModel
+abstract class BaseModelXX
 {
    public $profiler;
    protected $db;
@@ -421,7 +421,7 @@ abstract class BaseModel
          }
 
          // Single Model instance
-         if ($value instanceof BaseModel) {
+         if ($value instanceof BaseModelXX) {
             $array[$key] = $value->toArray();
             continue;
          }
@@ -430,7 +430,7 @@ abstract class BaseModel
          if (is_array($value)) {
             $arr = [];
             foreach ($value as $item) {
-               if ($item instanceof BaseModel) {
+               if ($item instanceof BaseModelXX) {
                   $arr[] = $item->toArray();
                } elseif (is_object($item) && method_exists($item, 'toArray')) {
                   $arr[] = $item->toArray();
@@ -526,7 +526,7 @@ abstract class BaseModel
 
    /**
     * findBy - cari satu record berdasarkan kolom tertentu
-    * @return BaseModel|null
+    * @return BaseModelXX|null
     */
    public function findBy($field, $value)
    {
